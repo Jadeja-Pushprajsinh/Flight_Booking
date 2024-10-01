@@ -1,0 +1,347 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px; 
+    line-height: 1.6;
+}
+
+#page1{
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+#page2{
+    height: 100vh;
+    width: 100%;
+    background-color: #aeeeee; 
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+#page2 img{
+    height: 600px;
+    width:1000px;
+}
+
+#page2 img:hover{
+    transform: translateZ(20px);
+}
+
+.slider {
+    overflow: hidden;
+    width: 1000px; 
+    position: relative;
+}
+
+.slide {
+    flex-shrink: 0;
+    height: 600px;
+    width: 1000px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.slide-track {
+    display: flex;
+    width: calc(10000px * 8);
+    animation: scroll 30s linear infinite; 
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-1000px * 8)); } /* Adjust according to number of images */
+}
+
+#page3{
+    height: 100vh;
+    width: 100%;
+    background-color: black; 
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+#page4{
+    height: 100vh;
+    width: 100%;
+    background-color: #aeeeee; 
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.top-bar {
+    background-color: #aeeeee; 
+    color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.top-bar .contact-info span {
+    margin-right: 20px;
+}
+
+.top-bar .social-links a {
+    color: #333;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.top-bar .social-links a:hover {
+    color: #008080; 
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-right a {
+    margin-left: 15px;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    background-color: #008080; 
+    color: white;
+    font-weight: bold;
+}
+
+.header-right a.login {
+    background-color: transparent;
+    color: #008080; 
+    border: 1px solid #008080; 
+}
+
+.header-right a:hover {
+    background-color: #7ea7a7; 
+}
+
+/* Navigation Bar */
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: #00796b; 
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #00796b; 
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #008080; 
+    border-bottom: 2px solid #b2ebf2; 
+}
+
+/* Container for the video and content */
+.video-background {
+    position: relative;
+    height: 100vh; 
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Video styling */
+#background-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    transform: translate(-50%, -50%);   
+    Width: 1920px;
+     Height: 937px;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    color: white; 
+    padding: 20px;
+    text-align: center;
+}
+
+.flight-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;  
+    background-color: #b2ebf2; 
+    border-radius: 10px;
+}
+
+.flight-form .input-group {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.flight-form .input-group input {
+    margin-left: 5px;
+    padding: 8px; 
+    width: 120px; 
+    border: 1px solid #00796b;
+}
+
+.flight-search-container {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    max-width: 1200px; 
+    width: 90%; 
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.32);
+    border-radius: 15px;
+    color: #333;
+    z-index: 1; 
+    backdrop-filter: blur(10px);
+}
+
+.flight-header {
+    background-color: #008080; 
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white; 
+}
+
+.flight-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.flight-search-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.trip-type {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    background-color: #b2ebf2;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.trip-type input[type="radio"] {
+    display: none;
+}
+
+.trip-type label {
+    background-color: white;
+    color: black;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.trip-type input[type="radio"]:checked + label {
+    background-color: #008080; 
+    color: white; 
+    border: 1px solid #008080;
+}
+
+.trip-type label:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+.trip-type h2 {
+    padding-left: 620px;
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px; 
+    padding-bottom: 25px;
+    position: relative;
+
+}
+
+.input-group label {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    font-size: 20px;    
+    background-color: white;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-bottom: 25px;
+}
+
+.input-group input {
+    margin-top: 15px;
+    padding: 8px; 
+    border-radius: 5px;
+    border: 1px solid #00796b; 
+    width: 100%; 
+    font-size: medium;
+    font-weight: bold;
+    appearance: none;
+}
+
+#searchBtn {
+    background-color: #008080; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    align-self: center;
+}
+
+#searchBtn:hover {
+    background-color: #006666; 
+}
+
+input[disabled] {
+    background-color: #ccc;
+}
+

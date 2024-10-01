@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    background-color: #008080;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: visible; 
+    z-index: 9999; 
+}
+
+.loader-earth {
+    text-align: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    height: 245px;
+    margin: 0 auto;
+    animation: earth-animation-display 2s ease-in-out;
+}
+
+.earth-wrapper {
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+    padding-top: 44px;
+}
+
+.earth {
+    width: 160px;
+    height: 160px;
+    background: url("../img/earthloader.gif");
+    border-radius: 100%;
+    background-size: 340px;
+    animation: earthAnim 12s infinite linear;
+    margin: 0 auto;
+    border: 1px solid #CDD1D3;
+}
+
+.plane {
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+    animation: plane-animation-display 4s ease-in-out;
+}
+
+.plane-img {
+    animation: spin 2.5s linear infinite;
+}
+
+/* Animations */
+@keyframes earth-animation-display {
+    0% {
+        transform: scale(0, 0);
+        visibility: hidden;
+    }
+    100% {
+        transform: scale(1, 1);
+        visibility: visible;
+    }
+}
+
+@keyframes plane-animation-display {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes earthAnim {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -340px;
+    }
+}
