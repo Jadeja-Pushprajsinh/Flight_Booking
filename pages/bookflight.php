@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $arrival_airport = mysqli_real_escape_string($conn, $_POST['arrival_airport']);
     $departure_time = mysqli_real_escape_string($conn, $_POST['departure_time']);
     $price = (float)$_POST['price'];  
-    // Storeing session
+    // Store session
     $_SESSION['flight_number'] = $flight_number;
     $_SESSION['departure_airport'] = $departure_airport;
     $_SESSION['arrival_airport'] = $arrival_airport;
@@ -50,7 +50,6 @@ if (isset($_POST['confirm_booking'])) {
 
     // insert booking data into the Bookings table
     $sqlinsert = $conn->prepare("INSERT INTO Bookings (user_id, flight_number, departure_airport, arrival_airport, departure_time, total_price, booking_date, class_id) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-    $sqlinsert->bind_param("ssssdds", $user_id, $flight_number, $departure_airport, $arrival_airport, $departure_time, $price, $class_id);
 
     if ($sqlinsert->execute()) {
         // Store booking information in SESSION
@@ -227,7 +226,7 @@ if (isset($_POST['confirm_booking'])) {
             animation: bgAnimation 10s ease infinite;
         }
     </style>
-    </head>
+</head>
 <body>
     <div class="container">
         <h1>Book Your Flight</h1>
@@ -241,7 +240,7 @@ if (isset($_POST['confirm_booking'])) {
             <form method="POST" action="">
                 <!-- Dropdown for selecting class -->
                 <label for="class_id">Select Class:</label>
-                <select name="class_id" id="class_id" required>
+                <select name="class_id" id="class_id" required onchange="updateTotalPrice(<?= $price; ?>)">
                     <?php foreach ($classes as $class): ?>
                         <option value="<?= $class['class_id']; ?>"><?= htmlspecialchars($class['class_type']); ?></option>
                     <?php endforeach; ?>
@@ -249,21 +248,32 @@ if (isset($_POST['confirm_booking'])) {
 
                 <div class="dynamic-price">
                     <label for="numPassengers">Number of Passengers:</label>
-                    <input type="number" id="numPassengers" name="numPassengers" value="1" min="1" max="70" oninput="updateTotalPrice(<?= $price; ?>)">
+                    <input type="number" id="numPassengers" name="numPassengers" value="1" min="1" onchange="updateTotalPrice(<?= $price; ?>)" />
                 </div>
-                <p class="total-price">Total Price: <span id="totalPrice">₹ <?= number_format($price); ?></span></p>
 
-                <input type="hidden" name="confirm_booking" value="1">
-                <button type="submit">Confirm Booking</button>
+                <p class="total-price">Total Price: ₹ <span id="totalPrice"><?= number_format($price); ?></span></p>
+
+                <button type="submit" name="confirm_booking">Confirm Booking</button>
             </form>
         </div>
     </div>
 
     <script>
-        function updateTotalPrice(pricePerPerson) {
-            const numberOfPeople = document.getElementById('numPassengers').value;
-            const totalPrice = pricePerPerson * numberOfPeople;
-            document.getElementById('totalPrice').innerText = '₹ ' + totalPrice.toLocaleString();
+        function updateTotalPrice(basePrice) {
+            const numPassengers = parseInt(document.getElementById('numPassengers').value);
+            const classDropdown = document.getElementById('class_id');
+            const selectedClass = classDropdown.options[classDropdown.selectedIndex].text;
+            let adjustedPrice = basePrice;
+
+            // Adjust price based on the selected class
+            if (selectedClass === 'Business') {
+                adjustedPrice += 500;
+            } else if (selectedClass !== 'Economy') {
+                adjustedPrice += 1000;
+            }
+
+            const totalPrice = adjustedPrice * numPassengers;
+            document.getElementById('totalPrice').textContent = totalPrice.toLocaleString();
         }
     </script>
 </body>

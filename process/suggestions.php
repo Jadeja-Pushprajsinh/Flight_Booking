@@ -5,7 +5,6 @@
         // Prepare and execute a SQL query (assuming 'airports' table has 'name' column)
         $stmt = $conn->prepare("SELECT name FROM airports WHERE name LIKE ? LIMIT 5");
         $searchTerm = "%" . $term . "%";
-        $stmt->bind_param("s", $searchTerm);
         $stmt->execute();
         $result = $stmt->get_result();
         
