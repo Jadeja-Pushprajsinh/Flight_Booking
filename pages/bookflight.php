@@ -2,29 +2,26 @@
 session_start();
 include("../sql_database/conn.php");
 
-// Check if user is logged in
+// Check if user login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Retrieve flight details from POST or SESSION
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and validate POST data
     $flight_number = mysqli_real_escape_string($conn, $_POST['flight_number']);
     $departure_airport = mysqli_real_escape_string($conn, $_POST['departure_airport']);
     $arrival_airport = mysqli_real_escape_string($conn, $_POST['arrival_airport']);
     $departure_time = mysqli_real_escape_string($conn, $_POST['departure_time']);
-    $price = (float)$_POST['price'];  // Cast to float for safety
-
-    // Store flight details in SESSION
+    $price = (float)$_POST['price'];  
+    // Storeing session
     $_SESSION['flight_number'] = $flight_number;
     $_SESSION['departure_airport'] = $departure_airport;
     $_SESSION['arrival_airport'] = $arrival_airport;
     $_SESSION['departure_time'] = $departure_time;
     $_SESSION['price'] = $price;
 } else {
-    // Retrieve flight details from SESSION
+    // Retrieve session
     if (isset($_SESSION['flight_number'], $_SESSION['departure_airport'], $_SESSION['arrival_airport'], $_SESSION['departure_time'], $_SESSION['price'])) {
         $flight_number = $_SESSION['flight_number'];
         $departure_airport = $_SESSION['departure_airport'];
@@ -37,27 +34,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+$sql = "SELECT class_id, class_type FROM Classes";
+$result = $conn->query($sql);
+$classes = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $classes[] = $row;
+    }
+}
+
 // Handle booking confirmation
 if (isset($_POST['confirm_booking'])) {
     $user_id = $_SESSION['user_id'];
+    $class_id = $_POST['class_id']; // Get selected class ID
 
     // insert booking data into the Bookings table
-    $sqlinsert = $conn->prepare("INSERT INTO Bookings (user_id, flight_number, departure_airport, arrival_airport, departure_time, total_price, booking_date) VALUES (?, ?, ?, ?, ?, ?, NOW())");
-    // $sqlinsert->bind_param("sssssd", $user_id, $flight_number, $departure_airport, $arrival_airport, $departure_time, $price);
+    $sqlinsert = $conn->prepare("INSERT INTO Bookings (user_id, flight_number, departure_airport, arrival_airport, departure_time, total_price, booking_date, class_id) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
+    $sqlinsert->bind_param("ssssdds", $user_id, $flight_number, $departure_airport, $arrival_airport, $departure_time, $price, $class_id);
 
     if ($sqlinsert->execute()) {
-        echo "Flight booked successfully!";
-        $_SESSION['flight_number'];
-        $_SESSION['departure_airport'];
-        $_SESSION['arrival_airport'];
-        $_SESSION['departure_time'];
-        $_SESSION['price'];
+        // Store booking information in SESSION
+        $_SESSION['booking_id'] = $conn->insert_id; // Get the booking ID from the insert
+        $_SESSION['total_price'] = $price; // Total price for payment
+
+        // Redirect to payment page
+        header("Location: confirm_payment.php");
+        exit();
     } else {
         echo "Error booking flight: " . $sqlinsert->error;
     }
     $sqlinsert->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -218,8 +227,7 @@ if (isset($_POST['confirm_booking'])) {
             animation: bgAnimation 10s ease infinite;
         }
     </style>
-    
-</head>
+    </head>
 <body>
     <div class="container">
         <h1>Book Your Flight</h1>
@@ -229,26 +237,31 @@ if (isset($_POST['confirm_booking'])) {
             <p>To: <?= htmlspecialchars($arrival_airport); ?></p>
             <p>Departure Time: <?= htmlspecialchars($departure_time); ?></p>
             <p class="price">Price per person: ₹ <?= number_format($price); ?></p>
-            
+
             <form method="POST" action="">
+                <!-- Dropdown for selecting class -->
+                <label for="class_id">Select Class:</label>
+                <select name="class_id" id="class_id" required>
+                    <?php foreach ($classes as $class): ?>
+                        <option value="<?= $class['class_id']; ?>"><?= htmlspecialchars($class['class_type']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+
                 <div class="dynamic-price">
                     <label for="numPassengers">Number of Passengers:</label>
                     <input type="number" id="numPassengers" name="numPassengers" value="1" min="1" max="70" oninput="updateTotalPrice(<?= $price; ?>)">
                 </div>
                 <p class="total-price">Total Price: <span id="totalPrice">₹ <?= number_format($price); ?></span></p>
-                
+
                 <input type="hidden" name="confirm_booking" value="1">
                 <button type="submit">Confirm Booking</button>
             </form>
         </div>
     </div>
+
     <script>
         function updateTotalPrice(pricePerPerson) {
             const numberOfPeople = document.getElementById('numPassengers').value;
-            if (numberOfPeople > 70) {
-                alert("You cannot book for more than 70 passengers.");
-                document.getElementById('numPassengers').value = 70; // Set it back to 70 if over limit
-            }
             const totalPrice = pricePerPerson * numberOfPeople;
             document.getElementById('totalPrice').innerText = '₹ ' + totalPrice.toLocaleString();
         }

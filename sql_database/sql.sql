@@ -103,13 +103,12 @@ INSERT INTO `classes` (`class_id`, `class_type`) VALUES (NULL, 'economy'), (NULL
 -- Create the Customers table
 CREATE TABLE IF NOT EXISTS Customers (
     user_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
+    username VARCHAR(30) NOT NULL,
     phone_number VARCHAR(15) NOT NULL,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
     password VARCHAR(25) NOT NULL,
     plane_id VARCHAR(20),
-    address VARCHAR(100),
     class_id INT(6) UNSIGNED,
     FOREIGN KEY (class_id) REFERENCES Classes(class_id)
 );

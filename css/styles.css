@@ -48,7 +48,7 @@ body {
     flex-shrink: 0;
     height: 600px;
     width: 1000px; 
-    display: flex;
+    display: flex;   
     align-items: center;
     justify-content: center;
     padding: 15px;

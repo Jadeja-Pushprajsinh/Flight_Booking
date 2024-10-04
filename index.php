@@ -27,7 +27,8 @@ session_start();
     <!--Content -->
     <div id="contents" style="visibility: hidden;">
         <!-- header file  -->
-        <?php include("./pages/header.php") ?>
+        <?php include("./pages/header.php"); ?>
+
         <!-- Main Section -->
         <div id="main" data-scroll-container>
             <div class="page1" data-scroll>
@@ -46,84 +47,100 @@ session_start();
                                     <label for="roundTrip">Round Trip</label>
                                     <h2>Book Your <span class="auto-type"></span> Flights</h2>
                                 </div>
+
                                 <div class="input-group">
                                     <label for="origin">
                                         <span><i class="fas fa-plane-departure"></i> Flying from</span>
                                         <input type="text" id="origin" name="origin" placeholder="Origin" autocomplete="off" required>
                                         <div id="origin-suggestions"></div>
-
                                     </label>
 
                                     <label for="destination">
                                         <span><i class="fas fa-plane-arrival"></i> Flying to</span>
                                         <input type="text" id="destination" name="destination" placeholder="Destination" autocomplete="off" required>
-                                        <div id="destination-suggestions" ></div>
+                                        <div id="destination-suggestions"></div>
                                     </label>
+
                                     <label for="depart">
                                         <span><i class="fas fa-calendar-alt"></i> Depart</span>
-                                        <input type="date" id="depart" name="depart" value="dd-mm-yyyy" required>
+                                        <input type="date" id="depart" name="depart" required>
                                     </label>
+
                                     <label for="return">
                                         <span><i class="fas fa-exchange-alt"></i> Return</span>
                                         <input type="date" id="return" name="return" disabled>
                                     </label>
+
                                     <label for="passengers">
                                         <span><i class="fas fa-users"></i> Travelers</span>
                                         <input type="number" id="passengers" name="passengers" value="1" min="1" required>
                                     </label>
-                                    <input id="searchBtn" type="submit" value="Search">
                                     
+                                    <input id="searchBtn" type="submit" value="Search">
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
             <div id="page2" data-scroll>
-                <div class="slide-track" data-scroll-speed="-2" data-scroll-direction="horizantal">
+                <div class="slide-track" data-scroll-speed="-2" data-scroll-direction="horizontal">
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/airport.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/airport.jpg" alt="Airport">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/goa.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/goa.jpg" alt="Goa">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/airplane.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/airplane.jpg" alt="Airplane">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/mumbai.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/mumbai.jpg" alt="Mumbai">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/setu.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/setu.jpg" alt="Bridge">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/rajashtan.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/rajashtan.jpg" alt="Rajasthan">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/airplane (2).jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/airplane (2).jpg" alt="Airplane 2">
                     </div>
                     <div class="slide">
-                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/kashmir.jpg" alt="">
+                        <img data-scroll data-scroll-speed="-1" class="slider" src="./img/kashmir.jpg" alt="Kashmir">
                     </div>
                 </div>
             </div>
 
-            <div id="page3" data-scroll>
-
-            </div>
-            <div id="page4" data-scroll>
-
-            </div>
-
+            <div id="page3" data-scroll></div>
+            <div id="page4" data-scroll></div>
         </div>
+
         <!-- footer file  -->
-        <?php include("./pages/footer.php") ?>
+        <?php include("./pages/footer.php"); ?>
     </div>
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
     <script src="./js/searchscript.js"></script>
     <script src="./js/script.js"></script>
+
+    <!-- Handling session-based welcome message -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = '<?php echo isset($_SESSION["username"]) ? $_SESSION["username"] : ""; ?>';
+            if (username) {
+                // Replace login button with username if logged in
+                const loginElement = document.querySelector('a[href="login.php"]');
+                if (loginElement) {
+                    loginElement.innerHTML = "Welcome, " + username;
+                    loginElement.href = "#"; // Change href if needed
+                }
+            }
+        });
+    </script>
+
 </body>
 
 </html>

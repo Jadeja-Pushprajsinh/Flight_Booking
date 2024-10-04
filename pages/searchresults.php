@@ -118,6 +118,7 @@ if ($result->num_rows > 0) {
             padding: 14px;
             width: 100%;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            gap: 20px;
         }
 
         .card:hover {
@@ -137,7 +138,7 @@ if ($result->num_rows > 0) {
             flex-direction: row;
             justify-content: space-around;
             flex: 1;
-            gap: 20px;
+            /* gap: 20px; */
         }
 
         .flight-time,
