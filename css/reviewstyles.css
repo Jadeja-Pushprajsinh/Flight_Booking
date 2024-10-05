@@ -1,0 +1,128 @@
+.review-main {
+    text-align: center;
+    padding: 50px;
+    font-family: Arial, sans-serif;
+    background-color: #aeeeee;
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    color: #008080;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #008080;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.button {
+    background-color: #008080;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #006666;
+}
+
+.reviews {
+    overflow: hidden;
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    width: calc(320px * 14);
+    animation: scroll 30s linear infinite;
+}
+
+.review-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.review-card img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+.review-card .name {
+    color: #008080;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.review-card .role {
+    color: #808080;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.review-card .text {
+    color: #808080;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.review-card .stars {
+    color: #008080;
+    margin-top: 10px;
+}
+
+.slider-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.slider-controls button {
+    background-color: #008080;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.slider-controls button:hover {
+    background-color: #006666;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-320px * 7));
+    }
+}

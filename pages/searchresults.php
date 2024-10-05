@@ -138,7 +138,6 @@ if ($result->num_rows > 0) {
             flex-direction: row;
             justify-content: space-around;
             flex: 1;
-            /* gap: 20px; */
         }
 
         .flight-time,
@@ -178,110 +177,114 @@ if ($result->num_rows > 0) {
 </head>
 
 <body class="bg-teal-50 py-8">
-    <div class="container mx-auto px-4">
-        <!-- Header -->
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-teal-800">Flight Search Results</h1>
-            <p class="text-gray-600 mt-2">Find the best flights for your trip</p>
-        </header>
+   
 
-        <!-- Filters Section -->
-        <section class="flex justify-center mb-8 space-x-6">
-            <!-- Cheapest -->
-            <div class="flex-1 max-w-xs text-center bg-white py-4 px-6 rounded-lg shadow-lg border hover-section transition-all duration-300">
-                <form method="POST" action="">
-                    <input type="hidden" name="origin" value="<?= htmlspecialchars($origin); ?>">
-                    <input type="hidden" name="destination" value="<?= htmlspecialchars($destination); ?>">
-                    <input type="hidden" name="depart" value="<?= htmlspecialchars($depart_date); ?>">
-                    <input type="hidden" name="passengers" value="<?= htmlspecialchars($passengers); ?>">
-                    <input type="hidden" name="sort_option" value="cheapest">
-                    <button type="submit" class="w-full">
-                        <div class="flex items-center justify-center space-x-2">
-                            <i class="fas fa-rupee-sign text-teal-600"></i>
-                            <span class="font-semibold text-teal-600">CHEAPEST</span>
-                        </div>
-                    </button>
-                </form>
-            </div>
-            <!-- Fastest -->
-            <div class="flex-1 max-w-xs text-center bg-white py-4 px-6 rounded-lg shadow-lg border hover-section transition-all duration-300">
-                <form method="POST" action="">
-                    <input type="hidden" name="origin" value="<?= htmlspecialchars($origin); ?>">
-                    <input type="hidden" name="destination" value="<?= htmlspecialchars($destination); ?>">
-                    <input type="hidden" name="depart" value="<?= htmlspecialchars($depart_date); ?>">
-                    <input type="hidden" name="passengers" value="<?= htmlspecialchars($passengers); ?>">
-                    <input type="hidden" name="sort_option" value="fastest">
-                    <button type="submit" class="w-full">
-                        <div class="flex items-center justify-center space-x-2">
-                            <i class="fas fa-bolt text-teal-600"></i>
-                            <span class="font-semibold text-teal-600">FASTEST</span>
-                        </div>
-                    </button>
-                </form>
-            </div>
-        </section>
+        <div class="container mx-auto px-4">
 
-        <!-- Flight Results -->
-        <section class="flex-container">
-            <?php if (isset($flights) && !empty($flights)) : ?>
-                <?php foreach ($flights as $flight) : ?>
-                    <div class="card">
-                        <!-- Airline logo and name -->
-                        <div class="flight-info">
-                            <img src="https://placehold.co/50x50" alt="<?= $flight['airline']; ?> logo" class="icon">
-                            <div>
-                                <h2 class="font-semibold text-teal-800"><?= $flight['airline']; ?></h2>
-                                <p class="text-gray-500"><?= $flight['flight_number']; ?></p>
+            <!-- Header -->
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-teal-800">Flight Search Results</h1>
+                <p class="text-gray-600 mt-2">Find the best flights for your trip</p>
+            </header>
+
+            <!-- Filters Section -->
+            <section class="flex justify-center mb-8 space-x-6">
+                <!-- Cheapest -->
+                <div class="flex-1 max-w-xs text-center bg-white py-4 px-6 rounded-lg shadow-lg border hover-section transition-all duration-300">
+                    <form method="POST" action="">
+                        <input type="hidden" name="origin" value="<?= htmlspecialchars($origin); ?>">
+                        <input type="hidden" name="destination" value="<?= htmlspecialchars($destination); ?>">
+                        <input type="hidden" name="depart" value="<?= htmlspecialchars($depart_date); ?>">
+                        <input type="hidden" name="passengers" value="<?= htmlspecialchars($passengers); ?>">
+                        <input type="hidden" name="sort_option" value="cheapest">
+                        <button type="submit" class="w-full">
+                            <div class="flex items-center justify-center space-x-2">
+                                <i class="fas fa-rupee-sign text-teal-600"></i>
+                                <span class="font-semibold text-teal-600">CHEAPEST</span>
                             </div>
-                        </div>
+                        </button>
+                    </form>
+                </div>
+                <!-- Fastest -->
+                <div class="flex-1 max-w-xs text-center bg-white py-4 px-6 rounded-lg shadow-lg border hover-section transition-all duration-300">
+                    <form method="POST" action="">
+                        <input type="hidden" name="origin" value="<?= htmlspecialchars($origin); ?>">
+                        <input type="hidden" name="destination" value="<?= htmlspecialchars($destination); ?>">
+                        <input type="hidden" name="depart" value="<?= htmlspecialchars($depart_date); ?>">
+                        <input type="hidden" name="passengers" value="<?= htmlspecialchars($passengers); ?>">
+                        <input type="hidden" name="sort_option" value="fastest">
+                        <button type="submit" class="w-full">
+                            <div class="flex items-center justify-center space-x-2">
+                                <i class="fas fa-bolt text-teal-600"></i>
+                                <span class="font-semibold text-teal-600">FASTEST</span>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </section>
 
-                        <!-- Flight Details -->
-                        <div class="flight-details">
-                            <div class="flight-time">
-                                <p class="text-lg font-semibold text-teal-800"><?= date('H:i', strtotime($flight['departure_time'])); ?></p>
-                                <p class="text-sm text-gray-500"><?= ucfirst($flight['departure_airport']); ?></p>
+            <!-- Flight Results -->
+            <section class="flex-container">
+                <?php if (isset($flights) && !empty($flights)) : ?>
+                    <?php foreach ($flights as $flight) : ?>
+                        <div class="card">
+                            <!-- Airline logo and name -->
+                            <div class="flight-info">
+                                <img src="https://placehold.co/50x50" alt="<?= $flight['airline']; ?> logo" class="icon">
+                                <div>
+                                    <h2 class="font-semibold text-teal-800"><?= $flight['airline']; ?></h2>
+                                    <p class="text-gray-500"><?= $flight['flight_number']; ?></p>
+                                </div>
                             </div>
 
-                            <div class="duration">
-                                <p class="text-sm text-gray-500"><?= floor($flight['duration'] / 60) . 'h ' . ($flight['duration'] % 60) . 'm'; ?></p>
-                                <p class="text-sm text-green-500">Non-stop</p>
+                            <!-- Flight Details -->
+                            <div class="flight-details">
+                                <div class="flight-time">
+                                    <p class="text-lg font-semibold text-teal-800"><?= date('H:i', strtotime($flight['departure_time'])); ?></p>
+                                    <p class="text-sm text-gray-500"><?= ucfirst($flight['departure_airport']); ?></p>
+                                </div>
+
+                                <div class="duration">
+                                    <p class="text-sm text-gray-500"><?= floor($flight['duration'] / 60) . 'h ' . ($flight['duration'] % 60) . 'm'; ?></p>
+                                    <p class="text-sm text-green-500">Non-stop</p>
+                                </div>
+
+                                <div class="arrival-time">
+                                    <?php
+                                    $departure_time = new DateTime($flight['departure_time']);
+                                    $arrival_time = clone $departure_time;
+                                    $arrival_time->modify("+{$flight['duration']} minutes");
+                                    ?>
+                                    <p class="text-lg font-semibold text-teal-800"><?= $arrival_time->format('H:i'); ?></p>
+                                    <p class="text-sm text-gray-500"><?= ucfirst($flight['arrival_airport']); ?></p>
+                                </div>
                             </div>
 
-                            <div class="arrival-time">
-                                <?php
-                                $departure_time = new DateTime($flight['departure_time']);
-                                $arrival_time = clone $departure_time;
-                                $arrival_time->modify("+{$flight['duration']} minutes");
-                                ?>
-                                <p class="text-lg font-semibold text-teal-800"><?= $arrival_time->format('H:i'); ?></p>
-                                <p class="text-sm text-gray-500"><?= ucfirst($flight['arrival_airport']); ?></p>
+                            <!-- Price and Book Button -->
+                            <div class="flight-price">
+                                <p class="text-xl font-bold text-teal-800">₹ <?= number_format($flight['price']); ?></p>
+                                <p class="text-sm text-gray-500">per adult</p>
                             </div>
+
+                            <div class="flight-book">
+                                <form method="POST" action="bookflight.php">
+                                    <input type="hidden" name="flight_number" value="<?= $flight['flight_number']; ?>">
+                                    <input type="hidden" name="departure_airport" value="<?= $flight['departure_airport']; ?>">
+                                    <input type="hidden" name="arrival_airport" value="<?= $flight['arrival_airport']; ?>">
+                                    <input type="hidden" name="departure_time" value="<?= $flight['departure_time']; ?>">
+                                    <input type="hidden" name="price" value="<?= $flight['price']; ?>">
+                                    <button type="submit">Book Flight</button>
+                                </form>
+
+                                </form>
+                            </div>
+
                         </div>
-
-                        <!-- Price and Book Button -->
-                        <div class="flight-price">
-                            <p class="text-xl font-bold text-teal-800">₹ <?= number_format($flight['price']); ?></p>
-                            <p class="text-sm text-gray-500">per adult</p>
-                        </div>
-
-                        <div class="flight-book">
-                            <form method="POST" action="bookflight.php">
-                                <input type="hidden" name="flight_number" value="<?= $flight['flight_number']; ?>">
-                                <input type="hidden" name="departure_airport" value="<?= $flight['departure_airport']; ?>">
-                                <input type="hidden" name="arrival_airport" value="<?= $flight['arrival_airport']; ?>">
-                                <input type="hidden" name="departure_time" value="<?= $flight['departure_time']; ?>">
-                                <input type="hidden" name="price" value="<?= $flight['price']; ?>">
-                                <button type="submit">Book Flight</button>
-                            </form>
-
-                            </form>
-                        </div>
-
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </section>
-    </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </section>
+        </div>
+    
 </body>
 
 </html>

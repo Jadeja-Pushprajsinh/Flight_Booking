@@ -2,10 +2,12 @@
 <?php
 session_start();
 ?>
+
 <head>
     <title>Flight Search</title>
-    <link rel="stylesheet" href="./css/loader.css">
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/reviewstyles.css">
+    <link rel="stylesheet" href="./css/loader.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
@@ -13,13 +15,13 @@ session_start();
 
 <body>
     <!-- Loader -->
-    <div class="container" id="load">
+    <div class="loader" id="load">
         <div class="loader-earth">
             <div class="earth-wrapper">
                 <div class="earth"></div>
             </div>
             <div class="plane">
-                <img src="https://zupimages.net/up/19/34/4820.gif" class="plane-img">
+                <img src="./img/planeImg.gif" class="plane-img">
             </div>
         </div>
     </div>
@@ -75,7 +77,7 @@ session_start();
                                         <span><i class="fas fa-users"></i> Travelers</span>
                                         <input type="number" id="passengers" name="passengers" value="1" min="1" required>
                                     </label>
-                                    
+
                                     <input id="searchBtn" type="submit" value="Search">
                                 </div>
                             </div>
@@ -113,8 +115,368 @@ session_start();
                 </div>
             </div>
 
-            <div id="page3" data-scroll></div>
-            <div id="page4" data-scroll></div>
+            <div id="page3" data-scroll>
+            </div>
+            <div id="page4" data-scroll>
+            <?php
+$reviews = [
+    [
+        'name' => 'Elizabeth Olsen',
+        'role' => 'Client',
+        'text' => 'Booking my flight through Let\'s Book It was a breeze. The interface is user-friendly and I got a great deal. Highly recommend!',
+        'image' => 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTBGhLEqs75i962qqqp7lkvJWgadT4w2p3wZNa1zwx1rhHf5f1-o_a5oYUbBt-sRyaIbFeotnNW9jV0srOzFokQ1jdG1J2ltOgShjh49ow',
+        'stars' => 5
+    ],
+    [
+        'name' => 'Priya Sharma',
+        'role' => 'Client',
+        'text' => 'The booking process was smooth, but I faced some issues with the payment gateway. Overall, a decent experience.',
+        'image' => 'https://storage.googleapis.com/a1aa/image/Be2b2lmNdcUNUaJnUvcLZsfI1CfU52e1BK0nhN0qTX8f0LdcC.jpg',
+        'stars' => 4
+    ],
+    // Add more reviews as needed
+];
+?>
+
+                <div class="review-main">
+                    <div class="title">
+                        TESTIMONIALS
+                    </div>
+                    <div class="subtitle">
+                        What Our Customers Are Saying Us?
+                    </div>
+                    <div class="reviews" id="reviews">
+                        <div class="slide-track">
+                            <div class="review-card">
+                                <img alt="Portrait of Elizabeth olsen" height="60" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTBGhLEqs75i962qqqp7lkvJWgadT4w2p3wZNa1zwx1rhHf5f1-o_a5oYUbBt-sRyaIbFeotnNW9jV0srOzFokQ1jdG1J2ltOgShjh49ow" width="60" />
+                                <div class="name">
+                                    Elizabeth olsen
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    Booking my flight through Let's Book It was a breeze. The interface is user-friendly and I got a great deal. Highly recommend!
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Priya Sharma" height="60" src="https://storage.googleapis.com/a1aa/image/Be2b2lmNdcUNUaJnUvcLZsfI1CfU52e1BK0nhN0qTX8f0LdcC.jpg" width="60" />
+                                <div class="name">
+                                    Priya Sharma
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    The booking process was smooth, but I faced some issues with the payment gateway. Overall, a decent experience.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Anil Mehta" height="60" src="https://storage.googleapis.com/a1aa/image/YMyVp16iN2ozORmfoWP2mhlA7tXXvZQR2LTKGrYusJsUv0xJA.jpg" width="60" />
+                                <div class="name">
+                                    Anil Mehta
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    I found the best prices for my flight on Let's Book It. The customer service was also very helpful.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Sunita Verma" height="60" src="https://storage.googleapis.com/a1aa/image/7Dl6Ab6lchKVEpcQ4HeQUuC8SsfPdafUsANzyzGq5ebC7lOOB.jpg" width="60" />
+                                <div class="name">
+                                    Sunita Verma
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    The website is easy to navigate, but I wish there were more payment options available.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Vikram Singh" height="60" src="https://storage.googleapis.com/a1aa/image/9eCZVb4YcW3fbUJKtKuCqaoY7D1gUFwhCORfx78BZynZ9SHnA.jpg" width="60" />
+                                <div class="name">
+                                    Vikram Singh
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    Great experience! I was able to book my flight quickly and got a good discount. Will use again.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Neha Gupta" height="60" src="https://storage.googleapis.com/a1aa/image/46MesSyjJPRIBSGMgZzG9VrryzeYQkYYoR7gcV2RDppteSHnA.jpg" width="60" />
+                                <div class="name">
+                                    Neha Gupta
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    The booking process was straightforward, but I had to wait a while for the confirmation email.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Ramesh Patel" height="60" src="https://storage.googleapis.com/a1aa/image/XuTAV74EIeUOO6jhq59I39IleFqUDODpxAeRFQKtyHpU9SHnA.jpg" width="60" />
+                                <div class="name">
+                                    Ramesh Patel
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    I had a good experience booking my flight. The site is easy to use and I found a good deal.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Elizabeth olsen" height="60" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTBGhLEqs75i962qqqp7lkvJWgadT4w2p3wZNa1zwx1rhHf5f1-o_a5oYUbBt-sRyaIbFeotnNW9jV0srOzFokQ1jdG1J2ltOgShjh49ow" width="60" />
+                                <div class="name">
+                                    Elizabeth olsen
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    Booking my flight through Let's Book It was a breeze. The interface is user-friendly and I got a great deal. Highly recommend!
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Priya Sharma" height="60" src="https://storage.googleapis.com/a1aa/image/Be2b2lmNdcUNUaJnUvcLZsfI1CfU52e1BK0nhN0qTX8f0LdcC.jpg" width="60" />
+                                <div class="name">
+                                    Priya Sharma
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    The booking process was smooth, but I faced some issues with the payment gateway. Overall, a decent experience.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Anil Mehta" height="60" src="https://storage.googleapis.com/a1aa/image/YMyVp16iN2ozORmfoWP2mhlA7tXXvZQR2LTKGrYusJsUv0xJA.jpg" width="60" />
+                                <div class="name">
+                                    Anil Mehta
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    I found the best prices for my flight on Let's Book It. The customer service was also very helpful.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Sunita Verma" height="60" src="https://storage.googleapis.com/a1aa/image/7Dl6Ab6lchKVEpcQ4HeQUuC8SsfPdafUsANzyzGq5ebC7lOOB.jpg" width="60" />
+                                <div class="name">
+                                    Sunita Verma
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    The website is easy to navigate, but I wish there were more payment options available.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Vikram Singh" height="60" src="https://storage.googleapis.com/a1aa/image/9eCZVb4YcW3fbUJKtKuCqaoY7D1gUFwhCORfx78BZynZ9SHnA.jpg" width="60" />
+                                <div class="name">
+                                    Vikram Singh
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    Great experience! I was able to book my flight quickly and got a good discount. Will use again.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Neha Gupta" height="60" src="https://storage.googleapis.com/a1aa/image/46MesSyjJPRIBSGMgZzG9VrryzeYQkYYoR7gcV2RDppteSHnA.jpg" width="60" />
+                                <div class="name">
+                                    Neha Gupta
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    The booking process was straightforward, but I had to wait a while for the confirmation email.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="review-card">
+                                <img alt="Portrait of Ramesh Patel" height="60" src="https://storage.googleapis.com/a1aa/image/XuTAV74EIeUOO6jhq59I39IleFqUDODpxAeRFQKtyHpU9SHnA.jpg" width="60" />
+                                <div class="name">
+                                    Ramesh Patel
+                                </div>
+                                <div class="role">
+                                    Client
+                                </div>
+                                <div class="text">
+                                    I had a good experience booking my flight. The site is easy to use and I found a good deal.
+                                </div>
+                                <div class="stars">
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                    <i class="fas fa-star">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-controls">
+                        <button id="prev">
+                            <i class="fas fa-chevron-left">
+                            </i>
+                        </button>
+                        <button id="next">
+                            <i class="fas fa-chevron-right">
+                            </i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- footer file  -->
@@ -139,6 +501,31 @@ session_start();
                 }
             }
         });
+        const reviews = document.querySelector('.slide-track');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        let scrollAmount = 0;
+
+        function scrollReviews(direction) {
+            const scrollStep = 320; // Width of review card + margin
+            if (direction === 'next') {
+                scrollAmount += scrollStep;
+                if (scrollAmount >= reviews.scrollWidth - reviews.clientWidth) {
+                    scrollAmount = 0;
+                }
+            } else {
+                scrollAmount -= scrollStep;
+                if (scrollAmount < 0) {
+                    scrollAmount = reviews.scrollWidth - reviews.clientWidth;
+                }
+            }
+            reviews.style.transform = `translateX(-${scrollAmount}px)`;
+        }
+
+        prevButton.addEventListener('click', () => scrollReviews('prev'));
+        nextButton.addEventListener('click', () => scrollReviews('next'));
+
+        setInterval(() => scrollReviews('next'), 5000); // Auto-scroll every 5 seconds
     </script>
 
 </body>

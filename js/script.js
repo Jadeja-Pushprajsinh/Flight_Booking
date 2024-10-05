@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const totalSlides = slides.length;
-    slideTrack.style.width = `${1000 * totalSlides * 2}px`; // Double the width to include clones
+    slideTrack.style.width = `${1000 * totalSlides * 2}px`; 
 
     const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     scroll.update();
+    // loader
     document.onreadystatechange = function () {
         if (document.readyState === 'complete') {
             setTimeout(function() {
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 2400);
         }
     };
+    //scroll effect
     var typed = new Typed(".auto-type",{
         strings:["Cheapest" , "Fastest" ],
         typeSpeed: 140,
@@ -90,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
         showSuggestions(destinationInput, destinationSuggestions, filteredCities);
     });
 
-    // Hide suggestions when clicking outside
+    // Hide suggestions
     document.addEventListener('click', function(event) {
         if (!originSuggestions.contains(event.target) && !originInput.contains(event.target)) {
             originSuggestions.style.display = 'none';
