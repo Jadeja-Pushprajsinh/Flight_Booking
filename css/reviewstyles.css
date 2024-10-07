@@ -47,7 +47,7 @@
 
 .slide-track {
     display: flex;
-    width: calc(320px * 14);
+    width: calc(320px * 14); /* Change this to the number of reviews you have */
     animation: scroll 30s linear infinite;
 }
 
