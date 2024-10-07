@@ -4,38 +4,21 @@
     font-family: Arial, sans-serif;
     background-color: #aeeeee;
     margin: 0;
-    padding: 0;
+   border-spacing: 50px;
 }
 
 .title {
     color: #008080;
     font-size: 36px;
     font-weight: bold;
+    margin-bottom: 10px; 
 }
 
 .subtitle {
     color: #008080;
     font-size: 18px;
     margin-top: 10px;
-}
-
-.button {
-    background-color: #008080;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-}
-
-.button:hover {
-    background-color: #006666;
+    margin-bottom: 30px; 
 }
 
 .reviews {
@@ -47,7 +30,7 @@
 
 .slide-track {
     display: flex;
-    width: calc(320px * 14); /* Change this to the number of reviews you have */
+    width: calc(320px * 14); 
     animation: scroll 30s linear infinite;
 }
 
@@ -59,7 +42,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: left;
     flex-shrink: 0;
-    margin-right: 20px;
+    margin: 0 10px; 
 }
 
 .review-card img {
@@ -121,7 +104,6 @@
     0% {
         transform: translateX(0);
     }
-
     100% {
         transform: translateX(calc(-320px * 7));
     }

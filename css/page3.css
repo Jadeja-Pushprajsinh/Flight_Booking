@@ -1,0 +1,71 @@
+/* Existing styles */
+.page3main { 
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: black;
+    text-align: center;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #008080
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.content-left, .content-right {
+    width: 25%;
+    text-align: left;
+}
+
+.content-left h2, .content-right h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.content-left p, .content-right p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.image-center {
+    width: 30%;
+    text-align: center;
+}
+
+.image-center img {
+    max-width: 100%;
+    height: auto;
+}
+
+[data-scroll] {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+[data-scroll].is-inview {
+    opacity: 1;
+}
+
+
+.page3main {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

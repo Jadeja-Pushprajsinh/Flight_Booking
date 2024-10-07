@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+
 }
 
 body {
@@ -68,14 +70,14 @@ body {
 #page3{
     height: 100vh;
     width: 100%;
-    background-color: black; 
+    background-color: whitesmoke; 
     align-items: center;
     display: flex;
     justify-content: center;
     text-align: center;
 }
 
-#page4{
+#page4 {
     height: 100vh;
     width: 100%;
     background-color: #aeeeee; 
@@ -84,7 +86,6 @@ body {
     justify-content: center;
     text-align: center;
 }
-
 
 
 .top-bar {

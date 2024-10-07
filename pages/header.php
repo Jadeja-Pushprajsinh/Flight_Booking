@@ -7,19 +7,17 @@
         </div>
         <div class="social-links">
             <a>Follow Us:</a>
-            <a href="#"><i class="fab fa-linkedin"></i> Linkedin </a>
-            <a href="#"><i class="fab fa-github"></i> Github</a>
+            <a href="in/jadeja-pushprajsinh"><i class="fab fa-linkedin"></i> Linkedin </a>
+            <a href="https://github.com/Jadeja-Pushprajsinh"><i class="fab fa-github"></i> Github</a>
         </div>
     </div>
     <div class="nav-bar">
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="../../Let's_Book_It/index.php">Home</a></li>
                 <li><a href="#">Destinations</a></li>
-                <li><a href="#">All Trips</a></li>
                 <li><a href="#">Pages</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="../../Let's_Book_It/pages/about-us.php">About Us</a></li>
             </ul>
         </nav>
         <div class="header-right">
