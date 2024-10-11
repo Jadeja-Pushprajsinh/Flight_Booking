@@ -65,7 +65,7 @@ if ($result->num_rows > 0) {
     }
 } else {
     header('Location: error.php?error=No flights found for your search criteria.');
-    exit;
+    exit;   
 }
 ?>
 

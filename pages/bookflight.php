@@ -2,53 +2,93 @@
 session_start();
 include("../sql_database/conn.php");
 
-// Check if user is logged in
+// Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Retrieve flight details from session or POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $flight_number = mysqli_real_escape_string($conn, $_POST['flight_number']);
-    $departure_airport = mysqli_real_escape_string($conn, $_POST['departure_airport']);
-    $arrival_airport = mysqli_real_escape_string($conn, $_POST['arrival_airport']);
-    $departure_time = mysqli_real_escape_string($conn, $_POST['departure_time']);
-    $price = (float)$_POST['price'];
-    
-    // Store in session for persistence
-    $_SESSION['flight_number'] = $flight_number;
-    $_SESSION['departure_airport'] = $departure_airport;
-    $_SESSION['arrival_airport'] = $arrival_airport;
-    $_SESSION['departure_time'] = $departure_time;
-    $_SESSION['price'] = $price;
-} else {
-    // If session values exist, use them
-    if (isset($_SESSION['flight_number'], $_SESSION['departure_airport'], $_SESSION['arrival_airport'], $_SESSION['departure_time'], $_SESSION['price'])) {
-        $flight_number = $_SESSION['flight_number'];
-        $departure_airport = $_SESSION['departure_airport'];
-        $arrival_airport = $_SESSION['arrival_airport'];
-        $departure_time = $_SESSION['departure_time'];
-        $price = $_SESSION['price'];
-    } else {
-        echo "Flight details are missing!";
-        exit;
-    }
+// Check if required session data is available
+if (!isset($_SESSION['flight_number'], $_SESSION['price'], $_SESSION['departure_airport'], $_SESSION['arrival_airport'], $_SESSION['departure_time'])) {
+    echo "Session flight details are missing!";
+    print_r($_SESSION); // Print session data to debug
+    exit();
 }
 
 // Fetch available classes
-$sql = "SELECT class_id, class_type FROM Classes";
-$result = $conn->query($sql);
+$sql_classes = "SELECT class_id, class_type FROM Classes";
+$result_classes = $conn->query($sql_classes);
 $classes = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($result_classes->num_rows > 0) {
+    while ($row = $result_classes->fetch_assoc()) {
         $classes[] = $row;
     }
 }
+
+// Check if form was submitted with required fields
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['numPassengers'], $_POST['payment_method'], $_POST['luggage_weight'])) {
+    $user_id = $_SESSION['user_id'];
+    $flight_number = $_SESSION['flight_number'];
+    $class_id = (int)$_POST['class_id'];
+    $numPassengers = (int)$_POST['numPassengers'];
+    $price = (float)$_SESSION['price'];
+    $payment_method = htmlspecialchars($_POST['payment_method']);
+    $luggage_weight = (int)$_POST['luggage_weight'];
+
+    // Fetch flight ID from Flights table
+    $sql_flight = "SELECT flight_id FROM Flights WHERE flight_number = ?";
+    $stmt_flight = $conn->prepare($sql_flight);
+    $stmt_flight->bind_param("s", $flight_number);
+    $stmt_flight->execute();
+    $result_flight = $stmt_flight->get_result();
+
+    if ($result_flight->num_rows > 0) {
+        $flight = $result_flight->fetch_assoc();
+        $flight_id = $flight['flight_id'];
+    } else {
+        echo "Flight not found!";
+        exit();
+    }
+
+    // Calculate total price including extra baggage cost
+    $extra_baggage_cost = $luggage_weight > 15 ? ($luggage_weight - 15) * 100 : 0;
+    $total_price = ($price * $numPassengers) + $extra_baggage_cost;
+
+    // Insert booking details into the Bookings table
+    $sqlinsert = $conn->prepare("INSERT INTO Bookings (user_id, flight_id, class_id, booking_date, total_price, payment_method, quantity, luggage_weight) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)");
+    $sqlinsert->bind_param("iiisisi", $user_id, $flight_id, $class_id, $total_price, $payment_method, $numPassengers, $luggage_weight);
+
+    if ($sqlinsert->execute()) {
+        $_SESSION['booking_id'] = $conn->insert_id; // Store booking ID
+        $_SESSION['total_price'] = $total_price;
+
+        // Prepare confirmation message and image
+        $confirmation_message = '
+        <div class="confirmation-image">
+            <img src="../img/confirm.png" alt="Booking Confirmed">
+            <h2>Your booking has been confirmed!</h2>
+            <p>Booking ID: ' . htmlspecialchars($_SESSION['booking_id']) . '</p>
+            <p>Total Price: ₹' . number_format($total_price) . '</p>
+            <p>Extra Baggage Weight: ' . htmlspecialchars($luggage_weight) . ' kg</p>
+        </div>';
+    } else {
+        echo "Error booking flight: " . $sqlinsert->error;
+    }
+
+    $sqlinsert->close();
+} else {
+    // Display the form if it's a GET request or missing POST data
+    $flight_number = $_SESSION['flight_number'];
+    $departure_airport = $_SESSION['departure_airport'];
+    $arrival_airport = $_SESSION['arrival_airport'];
+    $departure_time = $_SESSION['departure_time'];
+    $price = $_SESSION['price'];
+    $confirmation_message = ''; // Initialize confirmation message
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,26 +96,14 @@ if ($result->num_rows > 0) {
     <style>
         body {
             background-color: #e0f7f7;
-            /* Light teal theme */
             font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             text-align: center;
             padding: 50px;
-        }
-
-        h1 {
-            font-size: 32px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            transition: color 0.3s ease;
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: textColorAnimation 10s ease infinite;
-            background-size: 600% 600%;
         }
 
         .flight-book {
@@ -88,11 +116,6 @@ if ($result->num_rows > 0) {
             text-align: left;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
-        }
-
-        .flight-book:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
         .flight-book p {
@@ -108,7 +131,8 @@ if ($result->num_rows > 0) {
             font-weight: bold;
         }
 
-        input[type="number"] {
+        input[type="number"],
+        select {
             width: 100%;
             padding: 8px;
             margin: 10px 0;
@@ -126,33 +150,11 @@ if ($result->num_rows > 0) {
             font-size: 18px;
             cursor: pointer;
             transition: box-shadow 0.4s ease, transform 0.4s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         button:hover {
             transform: scale(1.1);
             box-shadow: 0 10px 20px rgba(0, 121, 107, 0.3);
-        }
-
-        button:before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background-color: rgba(255, 255, 255, 0.2);
-            transition: width 0.4s ease, height 0.4s ease, top 0.4s ease, left 0.4s ease;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-        }
-
-        button:hover:before {
-            width: 0;
-            height: 0;
-            top: 50%;
-            left: 50%;
         }
 
         .dynamic-price {
@@ -162,57 +164,21 @@ if ($result->num_rows > 0) {
             padding-top: 10px;
         }
 
-        .dynamic-price label {
-            font-size: 16px;
-            color: #00796b;
-        }
-
         .total-price {
             font-size: 24px;
             margin-top: 10px;
         }
 
-        @keyframes bgAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+        .confirmation-image {
+            text-align: center;
+            margin-top: 20px;
         }
 
-        @keyframes textColorAnimation {
-            0% {
-                background-image: linear-gradient(270deg, #004d40, #00796b, #004d40);
-            }
-
-            50% {
-                background-image: linear-gradient(270deg, #00796b, #004d40, #00796b);
-            }
-
-            100% {
-                background-image: linear-gradient(270deg, #004d40, #00796b, #004d40);
-            }
+        .confirmation-image img {
+            max-width: 100%;
+            height: auto;
         }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(270deg, #d1f2eb, #b2dfdb, #4db6ac);
-            background-size: 600% 600%;
-            z-index: -1;
-            animation: bgAnimation 10s ease infinite;
-        }
-        </style>
+    </style>
 </head>
 
 <body>
@@ -225,8 +191,8 @@ if ($result->num_rows > 0) {
             <p>Departure Time: <?= htmlspecialchars($departure_time); ?></p>
             <p class="price">Price per person: ₹ <?= number_format($price); ?></p>
 
-            <!-- Form that sends data to confirmbooking.php -->
-            <form method="POST" action="confirmbooking.php">
+            <!-- Form that sends data to confirm booking -->
+            <form method="POST" action="">
                 <!-- Dropdown for selecting class -->
                 <label for="class_id">Select Class:</label>
                 <select name="class_id" id="class_id" required onchange="updateTotalPrice(<?= $price; ?>)">
@@ -241,34 +207,45 @@ if ($result->num_rows > 0) {
                     <input type="number" id="numPassengers" name="numPassengers" value="1" min="1" onchange="updateTotalPrice(<?= $price; ?>)" />
                 </div>
 
+                <!-- Input for extra baggage weight -->
+                <div class="dynamic-price">
+                    <label for="luggage_weight">Extra Baggage Weight (kg):</label>
+                    <input type="number" id="luggage_weight" name="luggage_weight" value="0" min="0" />
+                </div>
+
                 <!-- Display total price -->
                 <p class="total-price">Total Price: ₹ <span id="totalPrice"><?= number_format($price); ?></span></p>
 
-                <button type="submit" name="confirm_booking">Proceed to Confirmation</button>
+                <!-- Payment method (Example) -->
+                <label for="payment_method">Payment Method:</label>
+                <select name="payment_method" id="payment_method" required>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="Net Banking">Net Banking</option>
+                </select>
+
+                <button type="submit">Confirm Booking</button>
             </form>
+
+            <!-- Confirmation message will be injected here -->
+            <?= $confirmation_message; ?>
         </div>
     </div>
 
     <script>
-        function updateTotalPrice(basePrice) {
-            const numPassengers = parseInt(document.getElementById('numPassengers').value);
-            const classDropdown = document.getElementById('class_id');
-            const selectedClass = classDropdown.options[classDropdown.selectedIndex].text;
-
-            // Adjust price based on selected class
-            let adjustedPrice = basePrice;
-            if (selectedClass === 'Business') {
-                adjustedPrice = basePrice + 500;
-            } else if (selectedClass === 'Economy') {
-                adjustedPrice = basePrice;
-            } else {
-                adjustedPrice = basePrice + 1000;
-            }
-
-            // Calculate total price
-            const totalPrice = adjustedPrice * numPassengers;
-            document.getElementById('totalPrice').textContent = totalPrice.toLocaleString();
+        function updateTotalPrice(pricePerPerson) {
+            const numPassengers = parseInt(document.getElementById("numPassengers").value) || 0;
+            const luggageWeight = parseInt(document.getElementById("luggage_weight").value) || 0;
+            const extraBaggageCost = luggageWeight > 15 ? (luggageWeight - 15) * 100 : 0;
+            const totalPrice = (pricePerPerson * numPassengers) + extraBaggageCost;
+            document.getElementById("totalPrice").innerText = totalPrice.toLocaleString();
         }
     </script>
 </body>
+
 </html>
+
+<?php
+}
+$conn->close();
+?>

@@ -16,7 +16,7 @@
             <ul>
                 <li><a href="../../Let's_Book_It/index.php">Home</a></li>
                 <li><a href="#">Destinations</a></li>
-                <li><a href="#">Pages</a></li>
+                <li><a href="#page4">Pages</a></li>
                 <li><a href="../../Let's_Book_It/pages/about-us.php">About Us</a></li>
             </ul>
         </nav>

@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    const cities = ["Mumbai", "Delhi", "Bangalore", "Kolkata", "Chennai", "Hyderabad", "Jamnagar", "Pune", "Ahmedabad", "Goa", "Surat", "Vadodara", "Jaipur", "Lucknow", "Indore", "Nagpur", "Patna", "Bhopal", "Coimbatore", "Vijayawada", "Visakhapatnam", "Guwahati", "Mangalore", "Trivandrum", "Madurai", "Rajkot", "Udaipur", "Varanasi", "Raipur", "Chandigarh", "Dehradun"];
+    const cities = ["Delhi","Ahmedabad","Mumbai","Jamnagar","Bengaluru"];
     
     const originInput = document.getElementById('origin');
     const destinationInput = document.getElementById('destination');

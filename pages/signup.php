@@ -161,27 +161,27 @@ if (isset($_POST['submit'])) {
             <h1>Sign up</h1>
             <form action="" method="POST">
                 <div class="txt_field">
-                    <input type="text" name="username" required placeholder="Enter your Username : ">
+                    <input type="text" name="username" required>
                     <span></span>
                     <label>Username</label>
                 </div>
                 <div class="txt_field">
-                    <input type="password" name="password" required placeholder="Enter your Password : ">
+                    <input type="password" name="password" required>
                     <span></span>
                     <label>Password</label>
                 </div>
                 <div class="txt_field">
-                    <input type="text" name="phone_number" required placeholder="Enter your Phone Number : ">
+                    <input type="text" name="phone_number" required>
                     <span></span>
                     <label>Phone Number</label>
                 </div>
                 <div class="txt_field">
-                    <input type="text" name="first_name" required placeholder="Enter your First Name : ">
+                    <input type="text" name="first_name" required>
                     <span></span>
                     <label>First Name</label>
                 </div>
                 <div class="txt_field">
-                    <input type="text" name="last_name" required placeholder="Enter your Last Name : ">
+                    <input type="text" name="last_name" required>
                     <span></span>
                     <label>Last Name</label>
                 </div>

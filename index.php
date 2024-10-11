@@ -158,7 +158,8 @@ session_start();
             </div>
 
 
-            <div id="page4" data-scroll>
+            <div id="page4">
+
                 <?php $reviews = [
                     [
                         'name' => 'Meena Bhatt',
@@ -299,55 +300,14 @@ session_start();
                     </div>
                 </div>
             </div>
+            <!-- footer file  -->
+            <?php
+                include('./pages/footer.php');
+            ?>
         </div>
 
-        <!-- footer file  -->
-        <footer class="footer">
-            <div class="footer-left">
-                <h3 itemprop="name" class="p-name">Let's Book It<span> Space</span></h3>
-                <nav aria-label="Footer Navigation">
-                    <ul>
-                        <li><a href="../../Let's_Book_It/index.php">Home</a></li>
-                        <li><a href="#">Destinations</a></li>
-                        <li><a href="#">Pages</a></li>
-                        <li><a href="../../Let's_Book_It/pages/about-us.php">About Us</a></li>
-                    </ul>
-                </nav>
-                <p class="footer-name">Let's Book It &copy; 2024</p>
-            </div>
-
-            <div class="footer-center">
-                <div itemscope itemtype="http://schema.org/PostalAddress" class="p-address">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <p>
-                        <span itemprop="streetAddress" class="p-street-address">123 This is a Street</span>,
-                        <span itemprop="addressLocality" class="p-locality">A Locality</span>,
-                        <span itemprop="addressRegion" class="p-region">Region state</span>,
-                        <span itemprop="postalCode" class="p-postal-code">12345</span>
-                    </p>
-                </div>
-                <div>
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    <p itemprop="telephone" class="p-tel">+1 234567890</p>
-                </div>
-                <div>
-                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                    <p><a href="mailto:support@company.com" itemprop="email" class="u-email">myname@mail.com</a></p>
-                </div>
-            </div>
-
-            <div class="footer-right">
-                <p class="footer-about">
-                    <span>About this site</span>
-                    Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
-                </p>
-                <div class="footer-socials">
-                    <a href="in/jadeja-pushprajsinh"><i class="fab fa-linkedin"></i> Linkedin </a>
-                    <a href="https://github.com/Jadeja-Pushprajsinh"><i class="fab fa-github"></i> Github</a>
-                </div>
-            </div>
-        </footer>
     </div>
+
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>

@@ -1,4 +1,5 @@
-/* * {
+/* General Reset */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,19 +9,21 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     line-height: 1.6;
-} */
-
-.footer {
-    background: #ffffff; /* Changed to white for a lighter theme */
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
-    box-sizing: border-box;
-    width: 100%;
-    text-align: left;
-    font: bold 16px sans-serif;
-    padding: 55px 50px;
-    color: #333; /* Dark text for better readability */
 }
 
+/* Footer Styles */
+.footer {
+    background: #ffffff;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+    width: 100%;
+    height: 50%;
+    padding: 55px 50px;
+    color: #333;
+    z-index: 500;
+    text-align: left;
+}
+
+/* Footer Layout */
 .footer .footer-left,
 .footer .footer-center,
 .footer .footer-right {
@@ -28,45 +31,33 @@ body {
     vertical-align: top;
 }
 
-/* Footer left */
+/* Footer Left Section */
 .footer .footer-left {
     width: 40%;
 }
 
 .footer h3 {
-    color: teal; /* Changed to match your theme */
+    color: teal;
     font: normal 36px 'Open Sans', cursive;
     margin: 0;
 }
 
-.footer .footer-links {
-    color: #333; /* Dark text */
-    margin: 20px 0 12px;
-    padding: 0;
-}
-
-.footer .footer-links a {
-    display: inline-block;
-    line-height: 1.8;
-    font-weight: 400;
-    text-decoration: none;
-    color: inherit;
-}
-
 .footer .footer-name {
-    color: teal; /* Changed to match your theme */
+    color: teal;
     font-size: 14px;
     font-weight: normal;
     margin: 0;
+    padding-top: 30px;
+    font-size: larger;
 }
 
-/* Footer Center */
+/* Footer Center Section */
 .footer .footer-center {
     width: 35%;
 }
 
 .footer .footer-center i {
-    background-color: teal; /* Changed to match your theme */
+    background-color: teal;
     color: #ffffff;
     font-size: 25px;
     width: 38px;
@@ -80,7 +71,7 @@ body {
 
 .footer .footer-center p {
     display: inline-block;
-    color: #333; /* Dark text */
+    color: #333;
     font-weight: 400;
     vertical-align: middle;
     margin: 0;
@@ -94,30 +85,46 @@ body {
 }
 
 .footer .footer-center p a {
-    color: teal; /* Changed to match your theme */
+    color: teal;
     text-decoration: none;
 }
 
-.footer .footer-links a:before {
-    content: "|";
-    font-weight: 300;
-    font-size: 20px;
-    left: 0;
-    color: #333; /* Dark text */
-    display: inline-block;
-    padding-right: 5px;
-}
-
-.footer .footer-links .link-1:before {
-    content: none;
-}
-
-/* Footer Right */
+/* Footer Right Section */
 .footer .footer-right {
     width: 20%;
 }
 
 .footer .footer-about {
     line-height: 20px;
-    color: #333; /* Dark text */
+    color: #333;
+}
+
+/* Social Links Section */
+.footer .footer-socials {
+    margin-top: 20px;
+}
+
+.footer .footer-socials a {
+    font-size: 30px; /* Larger icons */
+    margin-right: 15px;
+    color: teal;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer .footer-socials a:hover {
+    color: #006666;
+}
+
+.footer .footer-socials i {
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.footer .footer-socials a:hover i {
+    background-color: #00666685;
+    transform: scale(1.1);
 }
