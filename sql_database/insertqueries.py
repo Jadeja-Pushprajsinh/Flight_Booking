@@ -8,6 +8,13 @@ arrival_cities = ["Delhi", "Ahmedabad", "Mumbai", "Bengaluru", "Chennai"]
 start_date = datetime(2024, 10, 23)  # Start from 23rd October
 end_date = datetime(2024, 11, 3)  # End on 3rd November
 
+# Function to calculate the flight duration in hours and minutes
+def calculate_duration(departure_time, arrival_time):
+    duration = arrival_time - departure_time
+    hours, remainder = divmod(duration.total_seconds(), 3600)
+    minutes = remainder // 60
+    return f"{int(hours)}h {int(minutes)}m"
+
 # Function to generate INSERT queries
 def generate_flight_inserts(departure_city, arrival_cities, start_date, end_date):
     query_list = []
@@ -17,20 +24,26 @@ def generate_flight_inserts(departure_city, arrival_cities, start_date, end_date
         for arrival_city in arrival_cities:
             for i in range(1, 5):  # Four flights per day
                 flight_number = f"JN{i:02d}{current_date.day}{arrival_city[:2].upper()}"
-                departure_time = (current_date + timedelta(hours=i + 6)).strftime('%Y-%m-%d %H:%M:%S')
-                arrival_time = (current_date + timedelta(hours=i + 8)).strftime('%Y-%m-%d %H:%M:%S')
+                departure_time = current_date + timedelta(hours=i + 6)
+                arrival_time = current_date + timedelta(hours=i + 8)
+                duration = calculate_duration(departure_time, arrival_time)  # Calculate flight duration
+                departure_time_str = departure_time.strftime('%Y-%m-%d %H:%M:%S')
+                arrival_time_str = arrival_time.strftime('%Y-%m-%d %H:%M:%S')
                 price = 4000 + (i * 500)  # Price variation
-                query = f"INSERT INTO Flights (flight_number, airline, departure_airport, arrival_airport, departure_time, arrival_time, total_seats, available_seats, price) " \
-                        f"VALUES ('{flight_number}', 'Air India', '{departure_city}', '{arrival_city}', '{departure_time}', '{arrival_time}', 180, 180, {price});"
+                query = f"INSERT INTO Flights (flight_number, airline, departure_airport, arrival_airport, departure_time, arrival_time, duration, total_seats, available_seats, price) " \
+                        f"VALUES ('{flight_number}', 'Air India', '{departure_city}', '{arrival_city}', '{departure_time_str}', '{arrival_time_str}', '{duration}', 180, 180, {price});"
                 query_list.append(query)
                 
                 # Generate return flight for the same day
                 flight_number_return = f"{arrival_city[:2].upper()}{current_date.day}JN{i:02d}"
-                departure_time_return = (current_date + timedelta(hours=i + 9)).strftime('%Y-%m-%d %H:%M:%S')
-                arrival_time_return = (current_date + timedelta(hours=i + 11)).strftime('%Y-%m-%d %H:%M:%S')
+                departure_time_return = current_date + timedelta(hours=i + 9)
+                arrival_time_return = current_date + timedelta(hours=i + 11)
+                duration_return = calculate_duration(departure_time_return, arrival_time_return)  # Calculate return flight duration
+                departure_time_return_str = departure_time_return.strftime('%Y-%m-%d %H:%M:%S')
+                arrival_time_return_str = arrival_time_return.strftime('%Y-%m-%d %H:%M:%S')
                 price_return = 4500 + (i * 600)
-                query_return = f"INSERT INTO Flights (flight_number, airline, departure_airport, arrival_airport, departure_time, arrival_time, total_seats, available_seats, price) " \
-                               f"VALUES ('{flight_number_return}', 'Air India', '{arrival_city}', '{departure_city}', '{departure_time_return}', '{arrival_time_return}', 180, 180, {price_return});"
+                query_return = f"INSERT INTO Flights (flight_number, airline, departure_airport, arrival_airport, departure_time, arrival_time, duration, total_seats, available_seats, price) " \
+                               f"VALUES ('{flight_number_return}', 'Air India', '{arrival_city}', '{departure_city}', '{departure_time_return_str}', '{arrival_time_return_str}', '{duration_return}', 180, 180, {price_return});"
                 query_list.append(query_return)
         
         current_date += timedelta(days=1)

@@ -268,6 +268,13 @@ if ($result->num_rows > 0) {
 
                             <div class="flight-book">
                                 <form method="POST" action="bookflight.php">
+                                    <?php
+                                        $_SESSION['flight_number'] = $flight['flight_number'];
+                                        $_SESSION['departure_airport'] = $flight['departure_airport'];
+                                        $_SESSION['arrival_airport'] = $flight['arrival_airport'];
+                                        $_SESSION['departure_time'] = $flight['departure_time'];
+                                        $_SESSION['price'] = $flight['price'];
+                                    ?>
                                     <input type="hidden" name="flight_number" value="<?= $flight['flight_number']; ?>">
                                     <input type="hidden" name="departure_airport" value="<?= $flight['departure_airport']; ?>">
                                     <input type="hidden" name="arrival_airport" value="<?= $flight['arrival_airport']; ?>">

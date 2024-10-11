@@ -35,9 +35,10 @@
         first_name VARCHAR(30) NOT NULL,
         last_name VARCHAR(30) NOT NULL,
         password VARCHAR(25) NOT NULL,
-        plane_id VARCHAR(20),
+        flight_id VARCHAR(20),
         class_id INT(6) UNSIGNED,
-        FOREIGN KEY (class_id) REFERENCES Classes(class_id)
+        FOREIGN KEY (class_id) REFERENCES Classes(class_id),
+        FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
     );
 
     -- Create the Bookings table

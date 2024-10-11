@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 // Check if required session data is available
 if (!isset($_SESSION['flight_number'], $_SESSION['price'], $_SESSION['departure_airport'], $_SESSION['arrival_airport'], $_SESSION['departure_time'])) {
     echo "Session flight details are missing!";
-    print_r($_SESSION); // Print session data to debug
     exit();
 }
 
@@ -62,15 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
         $_SESSION['booking_id'] = $conn->insert_id; // Store booking ID
         $_SESSION['total_price'] = $total_price;
 
-        // Prepare confirmation message and image
-        $confirmation_message = '
-        <div class="confirmation-image">
-            <img src="../img/confirm.png" alt="Booking Confirmed">
-            <h2>Your booking has been confirmed!</h2>
-            <p>Booking ID: ' . htmlspecialchars($_SESSION['booking_id']) . '</p>
-            <p>Total Price: ₹' . number_format($total_price) . '</p>
-            <p>Extra Baggage Weight: ' . htmlspecialchars($luggage_weight) . ' kg</p>
-        </div>';
+        // Redirect to ticket.php to show booking details
+        header("Location: ticket.php");
+        exit();
     } else {
         echo "Error booking flight: " . $sqlinsert->error;
     }
@@ -83,12 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
     $arrival_airport = $_SESSION['arrival_airport'];
     $departure_time = $_SESSION['departure_time'];
     $price = $_SESSION['price'];
-    $confirmation_message = ''; // Initialize confirmation message
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,7 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
 
         .flight-book {
             background-color: white;
-            width: 400px;
+            width: 100%;
+            max-width: 500px;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -134,11 +127,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
         input[type="number"],
         select {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             font-size: 16px;
+            box-sizing: border-box;
         }
 
         button {
@@ -150,10 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
             font-size: 18px;
             cursor: pointer;
             transition: box-shadow 0.4s ease, transform 0.4s ease;
+            width: 100%;
         }
 
         button:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 10px 20px rgba(0, 121, 107, 0.3);
         }
 
@@ -169,14 +164,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
             margin-top: 10px;
         }
 
-        .confirmation-image {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .confirmation-image img {
-            max-width: 100%;
-            height: auto;
+        @media (max-width: 768px) {
+            .flight-book {
+                width: 100%;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -185,11 +177,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
     <div class="container">
         <h1>Book Your Flight</h1>
         <div class="flight-book">
-            <p>Flight Number: <?= htmlspecialchars($flight_number); ?></p>
-            <p>From: <?= htmlspecialchars($departure_airport); ?></p>
-            <p>To: <?= htmlspecialchars($arrival_airport); ?></p>
-            <p>Departure Time: <?= htmlspecialchars($departure_time); ?></p>
-            <p class="price">Price per person: ₹ <?= number_format($price); ?></p>
+            <h1>Flight Number: <?= htmlspecialchars($flight_number); ?></h1>
+            <h1>From: <?= htmlspecialchars($departure_airport); ?></h1>
+            <h1>To: <?= htmlspecialchars($arrival_airport); ?></h1>
+            <h1>Departure Time: <?= htmlspecialchars($departure_time); ?></h1>
+            <h1 class="price">Price per person: ₹ <?= number_format($price); ?></h1>
 
             <!-- Form that sends data to confirm booking -->
             <form method="POST" action="">
@@ -226,26 +218,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
 
                 <button type="submit">Confirm Booking</button>
             </form>
-
-            <!-- Confirmation message will be injected here -->
-            <?= $confirmation_message; ?>
         </div>
     </div>
 
     <script>
         function updateTotalPrice(pricePerPerson) {
-            const numPassengers = parseInt(document.getElementById("numPassengers").value) || 0;
-            const luggageWeight = parseInt(document.getElementById("luggage_weight").value) || 0;
+            const numPassengers = parseInt(document.getElementById('numPassengers').value);
+            const luggageWeight = parseInt(document.getElementById('luggage_weight').value);
+            const basePrice = pricePerPerson * numPassengers;
             const extraBaggageCost = luggageWeight > 15 ? (luggageWeight - 15) * 100 : 0;
-            const totalPrice = (pricePerPerson * numPassengers) + extraBaggageCost;
-            document.getElementById("totalPrice").innerText = totalPrice.toLocaleString();
+            const totalPrice = basePrice + extraBaggageCost;
+            document.getElementById('totalPrice').innerText = totalPrice.toLocaleString();
         }
     </script>
 </body>
-
 </html>
-
-<?php
-}
-$conn->close();
-?>
