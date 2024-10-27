@@ -55,13 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
 
     // Insert booking details into the Bookings table
     $sqlinsert = $conn->prepare("INSERT INTO Bookings (user_id, flight_id, class_id, booking_date, total_price, payment_method, quantity, luggage_weight) VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)");
-    $sqlinsert->bind_param("iiisisi", $user_id, $flight_id, $class_id, $total_price, $payment_method, $numPassengers, $luggage_weight);
+    $sqlinsert->bind_param("iiissii", $user_id, $flight_id, $class_id, $total_price, $payment_method, $numPassengers, $luggage_weight);
 
     if ($sqlinsert->execute()) {
         $_SESSION['booking_id'] = $conn->insert_id; // Store booking ID
         $_SESSION['total_price'] = $total_price;
 
-        // Redirect to ticket.php to show booking details
+        // Change made: Corrected the redirect to point to ticket.php in the same directory
         header("Location: ticket.php");
         exit();
     } else {
@@ -81,155 +81,197 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['class_id'], $_POST['nu
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Your Flight</title>
     <style>
         body {
-            background-color: #e0f7f7;
-            font-family: 'Arial', sans-serif;
+            background-color: #aeeeee;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            text-align: center;
             padding: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .flight-book {
-            background-color: white;
-            width: 100%;
-            max-width: 500px;
+        /* Center the title */
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            color: #004d40;
+            margin-bottom: 40px;
+        }
+
+        /* Booking Wrapper to contain both sections and the button */
+        .booking-wrapper {
+            background-color: #ffffff;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin: 0 auto;
-            text-align: left;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .flight-book p {
+        /* Flight and Passenger Details in a single row */
+        .booking-section {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 30px;
+        }
+
+        /* Flight Details and Booking Form */
+        .flight-details,
+        .booking-form {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .flight-details h2,
+        .booking-form h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #004d40;
+        }
+
+        .flight-details p,
+        .booking-form label {
             font-size: 18px;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .price,
-        .total-price {
-            color: #004d40;
-            font-size: 22px;
+        .price {
+            color: #00695c;
+            font-size: 20px;
             font-weight: bold;
         }
 
+        /* Inputs and select dropdown styling */
         input[type="number"],
         select {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 16px;
-            box-sizing: border-box;
+        }
+
+        /* Center the confirm button under the entire form */
+        .center-btn {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
         }
 
         button {
-            background-color: #00796b;
+            background-color: #004d40;
             color: white;
+            padding: 15px;
             border: none;
-            padding: 12px 25px;
             border-radius: 30px;
             font-size: 18px;
+            width: 50%;
             cursor: pointer;
-            transition: box-shadow 0.4s ease, transform 0.4s ease;
-            width: 100%;
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 121, 107, 0.3);
-        }
-
-        .dynamic-price {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-        }
-
-        .total-price {
-            font-size: 24px;
-            margin-top: 10px;
+            background-color: #00796b;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 121, 107, 0.2);
         }
 
         @media (max-width: 768px) {
-            .flight-book {
+            /* Make layout stack vertically on smaller screens */
+            .booking-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .center-btn button {
                 width: 100%;
-                padding: 20px;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <?php include("../pages/header.php"); ?>
     <div class="container">
-        <h1>Book Your Flight</h1>
-        <div class="flight-book">
-            <h1>Flight Number: <?= htmlspecialchars($flight_number); ?></h1>
-            <h1>From: <?= htmlspecialchars($departure_airport); ?></h1>
-            <h1>To: <?= htmlspecialchars($arrival_airport); ?></h1>
-            <h1>Departure Time: <?= htmlspecialchars($departure_time); ?></h1>
-            <h1 class="price">Price per person: ₹ <?= number_format($price); ?></h1>
+        <h1 class="page-title">Book Your Flight</h1>
 
-            <!-- Form that sends data to confirm booking -->
-            <form method="POST" action="">
-                <!-- Dropdown for selecting class -->
-                <label for="class_id">Select Class:</label>
-                <select name="class_id" id="class_id" required onchange="updateTotalPrice(<?= $price; ?>)">
-                    <?php foreach ($classes as $class) : ?>
-                        <option value="<?= $class['class_id']; ?>"><?= htmlspecialchars($class['class_type']); ?></option>
-                    <?php endforeach; ?>
-                </select>
-
-                <!-- Input for number of passengers -->
-                <div class="dynamic-price">
-                    <label for="numPassengers">Number of Passengers:</label>
-                    <input type="number" id="numPassengers" name="numPassengers" value="1" min="1" onchange="updateTotalPrice(<?= $price; ?>)" />
+        <div class="booking-wrapper">
+            <div class="booking-section">
+                <!-- Flight Information -->
+                <div class="flight-details">
+                    <u style="color: #004d40;"><h1 style="margin-bottom: 20px;font-size: 27px;color: #004d40;">Flight Information</h1></u>
+                    <p><strong>Flight Number:</strong> <?= htmlspecialchars($flight_number); ?></p>
+                    <p><strong>From:</strong> <?= htmlspecialchars($departure_airport); ?></p>
+                    <p><strong>To:</strong> <?= htmlspecialchars($arrival_airport); ?></p>
+                    <p><strong>Departure Time:</strong> <?= htmlspecialchars($departure_time); ?></p>
+                    <p class="price"><strong>Price per person:</strong> ₹ <?= number_format($price); ?></p>
+                    <p style="font-size: 30px;font-weight: bold;color: #004d40;">Total Price: ₹ <span id="totalPrice"><?= number_format($price); ?></span></p>
                 </div>
 
-                <!-- Input for extra baggage weight -->
-                <div class="dynamic-price">
-                    <label for="luggage_weight">Extra Baggage Weight (kg):</label>
-                    <input type="number" id="luggage_weight" name="luggage_weight" value="0" min="0" />
+                <!-- Passenger Details -->
+                <div class="booking-form">
+                    <u style="color: #004d40;"><h2>Passenger Details</h2></u>
+                    <form method="POST" action="">
+                        <label for="class_id">Select Class:</label>
+                        <select name="class_id" id="class_id" required onchange="updateTotalPrice(<?= $price; ?>)">
+                            <?php foreach ($classes as $class) : ?>
+                                <option value="<?= $class['class_id']; ?>"><?= htmlspecialchars($class['class_type']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <label for="numPassengers">Number of Passengers:</label>
+                        <input type="number" id="numPassengers" name="numPassengers" value="1" min="1" onchange="updateTotalPrice(<?= $price; ?>)" />
+
+                        <label for="luggage_weight">Extra Baggage Weight (kg):</label>
+                        <input type="number" id="luggage_weight" name="luggage_weight" value="0" min="0" onchange="updateTotalPrice(<?= $price; ?>)" />
+
+                        <label for="payment_method">Payment Method:</label>
+                        <select name="payment_method" id="payment_method" required>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="debit_card">Debit Card</option>
+                            <option value="net_banking">Net Banking</option>
+                        </select>
+
+                        <div class="center-btn">
+                            <button type="submit">Confirm Booking</button>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Display total price -->
-                <p class="total-price">Total Price: ₹ <span id="totalPrice"><?= number_format($price); ?></span></p>
-
-                <!-- Payment method (Example) -->
-                <label for="payment_method">Payment Method:</label>
-                <select name="payment_method" id="payment_method" required>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Debit Card">Debit Card</option>
-                    <option value="Net Banking">Net Banking</option>
-                </select>
-
-                <button type="submit">Confirm Booking</button>
-            </form>
+            </div>
         </div>
     </div>
+    <?php include("../pages/footer.php"); ?>
 
     <script>
-        function updateTotalPrice(pricePerPerson) {
-            const numPassengers = parseInt(document.getElementById('numPassengers').value);
-            const luggageWeight = parseInt(document.getElementById('luggage_weight').value);
-            const basePrice = pricePerPerson * numPassengers;
+        function updateTotalPrice(basePrice) {
+            const numPassengers = document.getElementById('numPassengers').value;
+            const luggageWeight = document.getElementById('luggage_weight').value;
+
+            // Calculate extra baggage cost if luggage exceeds 15kg
             const extraBaggageCost = luggageWeight > 15 ? (luggageWeight - 15) * 100 : 0;
-            const totalPrice = basePrice + extraBaggageCost;
-            document.getElementById('totalPrice').innerText = totalPrice.toLocaleString();
+
+            // Calculate total price
+            const totalPrice = (basePrice * numPassengers) + extraBaggageCost;
+
+            // Update the total price in the UI
+            document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
         }
     </script>
 </body>
+
 </html>

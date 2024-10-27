@@ -1,11 +1,11 @@
-<!-- ========== footer start =========== -->
+<!--  footer start = -->
 <footer class="footer">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-6 order-last order-md-first">
               <div class="copyright text-center text-md-start">
                 <p class="text-sm">
-                  Designed and Developed by KrishnaTourism
+                  Designed and Developed by Jadeja Pushprajsinh
                 </p>
               </div>
             </div>
@@ -26,11 +26,11 @@
         </div>
         <!-- end container -->
       </footer>
-      <!-- ========== footer end =========== -->
+      <!--  footer end = -->
     </main>
-    <!-- ======== main-wrapper end =========== -->
+    <!--  main-wrapper end = -->
 
-    <!-- ========= All Javascript files linkup ======== -->
+    <!--  All Javascript files linkup -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/Chart.min.js"></script>
     <script src="assets/js/dynamic-pie-chart.js"></script>
@@ -43,15 +43,7 @@
     <script src="../"></script>
 
     <script>
-      // ======== jvectormap activation
-      var markers = [
-        { name: "Egypt", coords: [26.8206, 30.8025] },
-        { name: "Russia", coords: [61.524, 105.3188] },
-        { name: "Canada", coords: [56.1304, -106.3468] },
-        { name: "Greenland", coords: [71.7069, -42.6043] },
-        { name: "Brazil", coords: [-14.235, -51.9253] },
-      ];
-
+     
       var jvm = new jsVectorMap({
         map: "world_merc",
         selector: "#map",
@@ -101,7 +93,7 @@
         calendarMini.render();
       });
 
-      // =========== chart one start
+      // = chart one start
       const ctx1 = document.getElementById("Chart1").getContext("2d");
       const chart1 = new Chart(ctx1, {
         // The type of chart we want to create
@@ -211,9 +203,9 @@
         },
       });
 
-      // =========== chart one end
+      // = chart one end
 
-      // =========== chart two start
+      // = chart two start
       const ctx2 = document.getElementById("Chart2").getContext("2d");
       const chart2 = new Chart(ctx2, {
         // The type of chart we want to create
@@ -312,9 +304,9 @@
           },
         },
       });
-      // =========== chart two end
+      // = chart two end
 
-      // =========== chart three start
+      // = chart three start
       const ctx3 = document.getElementById("Chart3").getContext("2d");
       const chart3 = new Chart(ctx3, {
         // The type of chart we want to create
@@ -448,9 +440,9 @@
           },
         },
       });
-      // =========== chart three end
+      // = chart three end
 
-      // ================== chart four start
+      // ======== chart four start
       const ctx4 = document.getElementById("Chart4").getContext("2d");
       const chart4 = new Chart(ctx4, {
         // The type of chart we want to create
@@ -541,7 +533,7 @@
           },
         },
       });
-      // =========== chart four end
+      // = chart four end
     </script>
   </body>
 </html>

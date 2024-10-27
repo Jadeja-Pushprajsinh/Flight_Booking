@@ -1,8 +1,10 @@
 <link rel="stylesheet" href="../css/footerstyles.css">
+<link rel="stylesheet" href="./css/fontawesome-free-6.6.0-desktop/fontawesome-free-6.6.0-desktop/svgs/regular/">
+
 <footer class="footer">
     <div class="footer-left">
         <h3 itemprop="name" class="p-name">Let's Book It</h3>
-        <div class="footer-socials">
+        <div class="footer-socials">    
             <a href="in/jadeja-pushprajsinh" rel="me" aria-label="LinkedIn" itemprop="sameAs" class="u-url"><i class="fa-brands fa-linkedin"></i></a>
             <a href="https://github.com/Jadeja-Pushprajsinh" rel="me" aria-label="GitHub" itemprop="sameAs" class="u-url"><i class="fa-brands fa-github"></i></a>
         </div>

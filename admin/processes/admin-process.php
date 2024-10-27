@@ -1,10 +1,10 @@
 <?php
 session_start();
-$email = $_POST['email'];
+$name = $_POST['name'];
 $password = $_POST['password']; 
 
 
-if($email == "admin@gmail.com" && $password == "admin")
+if($name == "admin" && $password == "admin")
 {   
     $_SESSION['admin'] = 'admin';
     header("Location: ../dashboard.php");
@@ -12,7 +12,7 @@ if($email == "admin@gmail.com" && $password == "admin")
 else
 {
     echo "<script>
-        alert('Wrong Email or Password');
+        alert('Wrong name or Password');
         window.location.href='../index.php';
         </script>";
 }

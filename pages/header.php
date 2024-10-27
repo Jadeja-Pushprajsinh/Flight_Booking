@@ -1,4 +1,10 @@
+<?php
+// session_start();
+?>
+
 <link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="./css/fontawesome-free-6.6.0-desktop/fontawesome-free-6.6.0-desktop/svgs/regular/">
+
 <!-- Header Section -->
 <header class="main-header">
     <div class="top-bar">
@@ -22,9 +28,17 @@
         </nav>
         <div class="header-right">
             <div class="logo">
-                <a href="../../Let's_Book_It/pages/login.php" class="login">Login</a>
+                <?php
+                if (isset($_SESSION['username'])) {
+                    // Display the logged-in username
+                    echo '<span>Welcome, ' . htmlspecialchars($_SESSION['username']) . '!</span>';
+                } else {
+                    // Display the login link if not logged in
+                    echo '<a href="login.php" class="login">Login</a>';
+                }
+                ?>
             </div>
-            <a href="#" class="admin">Admin</a>
+            <a href="../../Let's_Book_It/admin/index.php" class="admin">Admin</a>
         </div>
     </div>
 </header>

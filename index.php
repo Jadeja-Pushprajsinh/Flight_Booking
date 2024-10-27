@@ -11,6 +11,7 @@ session_start();
     <link rel="stylesheet" href="./css/reviewstyles.css">
     <link rel="stylesheet" href="./css/loader.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="./css/fontawesome-free-6.6.0-desktop/fontawesome-free-6.6.0-desktop/svgs/regular/">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -29,7 +30,7 @@ session_start();
     </div>
 
     <!--Content -->
-    <div id="contents" style="visibility: hidden;">
+    <div id="contents" >
         <!-- header file  -->
         <?php include("pages/header.php"); ?>
 
@@ -87,6 +88,8 @@ session_start();
                     </div>
                 </div>
             </div>
+
+
 
             <div id="page3" data-scroll>
                 <div class="page3main">
@@ -302,7 +305,7 @@ session_start();
             </div>
             <!-- footer file  -->
             <?php
-                include('./pages/footer.php');
+            include('./pages/footer.php');
             ?>
         </div>
 

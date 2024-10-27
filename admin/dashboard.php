@@ -1,19 +1,23 @@
-<?php include './include/header.php';
-include './include/sidebar.php';
-include '../database/connection.php';
+<?php
+include ('./include/header.php');
+include ('./include/sidebar.php');
+include ('../sql_database/conn.php');
 
-$sql = "SELECT count(*)as allpackage FROM packages;";
-$all_package = $con->query($sql);
+// Fetch total flights
+$sql = "SELECT count(*) as total_flights FROM flights;";
+$all_flights = $conn->query($sql);
 
-$sql = "SELECT count(*)as alluser FROM user;";
-$all_user = $con->query($sql);
+// Fetch total users
+$sql = "SELECT count(*) as total_users FROM customers;";
+$all_users = $conn->query($sql);
 
-$sql = "SELECT count(*)as allmessage FROM contectmessage;";
-$all_message = $con->query($sql);
+// Fetch total bookings
+$sql = "SELECT count(*) as total_bookings FROM bookings;";
+$all_bookings = $conn->query($sql);
 
-$sql = "SELECT count(*)as allbooking FROM booking;";
-$all_booking = $con->query($sql);
-
+// Fetch total classes
+$sql = "SELECT count(*) as total_classes FROM classes;";
+$all_classes = $conn->query($sql);
 ?>
 
 <!-- ========== section start ========== -->
@@ -24,10 +28,9 @@ $all_booking = $con->query($sql);
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="title mb-30">
-            <h2>Krishna Torism Managment</h2>
+            <h2>Let's Book It Dashboard</h2>
           </div>
         </div>
-        <!-- end col -->
         <div class="col-md-6">
           <div class="breadcrumb-wrapper mb-30">
             <nav aria-label="breadcrumb">
@@ -35,89 +38,80 @@ $all_booking = $con->query($sql);
                 <li class="breadcrumb-item">
                   <a>Dashboard</a>
                 </li>
-
               </ol>
             </nav>
           </div>
         </div>
-        <!-- end col -->
       </div>
-      <!-- end row -->
     </div>
     <!-- ========== title-wrapper end ========== -->
     <div class="row">
+      <!-- Total Flights -->
       <div class="col-xl-3 col-lg-4 col-sm-6">
         <div class="icon-card mb-30">
-          <div class="icon purple">
-            <a href="./managepackage.php">
-            <i class="lni lni-package"></i>
+          <div class="icon teal">
+            <a href="./manage_flights.php">
+              <i class="lni lni-plane"></i>
+            </a>
           </div>
           <div class="content">
-            <h3 class="text-bold mb-10">Total Package</h3>
-            <?php
-                foreach ($all_package as $p) { ?>
-                  <h3><?php echo $p['allpackage'] ?></h3>
-                <?php }   ?>
-            <!-- <h6 class="mb-10">10</h6> -->
+            <h3 class="text-bold mb-10">Total Flights</h3>
+            <?php foreach ($all_flights as $flight) { ?>
+              <h3><?php echo $flight['total_flights'] ?></h3>
+            <?php } ?>
           </div>
         </div>
-        </a>
-        <!-- End Icon Cart -->
       </div>
-      <!-- End Col -->
+      <!-- Total Users -->
       <div class="col-xl-3 col-lg-4 col-sm-6">
         <div class="icon-card mb-30">
-          <div class="icon purple">
-          <a href="./user.php">
-            <i class="lni lni-user"></i>
+          <div class="icon teal">
+            <a href="./customers.php">
+              <i class="lni lni-user"></i>
+            </a>
           </div>
           <div class="content">
             <h3 class="text-bold mb-10">Total Users</h3>
-            <?php
-                foreach ($all_user as $p) { ?>
-                  <h3><?php echo $p['alluser'] ?></h3>
-                <?php }   ?>
+            <?php foreach ($all_users as $user) { ?>
+              <h3><?php echo $user['total_users'] ?></h3>
+            <?php } ?>
           </div>
         </div>
-                </a>
-        <!-- End Icon Cart -->
       </div>
+      <!-- Total Bookings -->
       <div class="col-xl-3 col-lg-4 col-sm-6">
         <div class="icon-card mb-30">
-          <div class="icon purple">
-          <a href="./message.php">
-            <i class="lni lni-inbox"></i>
+          <div class="icon teal">
+            <a href="./bookings.php">
+              <i class="lni lni-ticket"></i>
+            </a>
           </div>
           <div class="content">
-            <h3 class="text-bold mb-10">Total Message</h3>
-            <?php
-                foreach ($all_message as $message) { ?>
-                  <h3><?php echo $message['allmessage'] ?></h3>
-                <?php }   ?>
+            <h3 class="text-bold mb-10">Total Bookings</h3>
+            <?php foreach ($all_bookings as $booking) { ?>
+              <h3><?php echo $booking['total_bookings'] ?></h3>
+            <?php } ?>
           </div>
         </div>
-                </a>
-        <!-- End Icon Cart -->
       </div>
+      <!-- Total Classes -->
       <div class="col-xl-3 col-lg-4 col-sm-6">
         <div class="icon-card mb-30">
-          <div class="icon purple">
-            <i class="lni lni-book"></i>
-            <a href="./booking.php">
+          <div class="icon teal">
+            <a href="./classes.php">
+              <i class="lni lni-layers"></i>
+            </a>
           </div>
           <div class="content">
-            <h3 class="text-bold mb-10">Total Booking</h3>
-            <?php
-                foreach ($all_booking as $booking) { ?>
-                  <h3><?php echo $booking['allbooking'] ?></h3>
-                <?php }   ?>
+            <h3 class="text-bold mb-10">Total Classes</h3>
+            <?php foreach ($all_classes as $class) { ?>
+              <h3><?php echo $class['total_classes'] ?></h3>
+            <?php } ?>
           </div>
         </div>
-        <!-- End Icon Cart -->
       </div>
     </div>
-    <!-- End Row -->
   </div>
 </section>
-<?php include './include/footer.php';
-?>
+
+<?php include './include/footer.php'; ?>

@@ -1,38 +1,35 @@
+
 <?php
-include './database/connection.php';
+include('../../sql_database/conn.php'); 
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "tms";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['flight_number'], $_POST['airline'], $_POST['departure_airport'], $_POST['arrival_airport'], $_POST['departure_time'], $_POST['arrival_time'], $_POST['price'], $_POST['duration'], $_POST['total_seats'])) {
 
-$con = mysqli_connect($servername, $username, $password, $dbname);
+    $flight_number = $_POST['flight_number'];
+    $airline = $_POST['airline'];
+    $departure_airport = $_POST['departure_airport'];
+    $arrival_airport = $_POST['arrival_airport'];
+    $departure_time = $_POST['departure_time'];
+    $arrival_time = $_POST['arrival_time'];
+    $price = (float)$_POST['price'];
+    $duration = (int)$_POST['duration'];
+    $total_seats = (int)$_POST['total_seats'];
+    $available_seats = $total_seats; 
 
-if (isset($_POST["upload"])) {
+    $sql = $conn->prepare("INSERT INTO Flights (flight_number, airline, departure_airport, arrival_airport, departure_time, arrival_time, duration, total_seats, available_seats, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $sql->bind_param("sssssssiii", $flight_number, $airline, $departure_airport, $arrival_airport, $departure_time, $arrival_time, $duration, $total_seats, $available_seats, $price);
 
-    $packagename = $_POST['packagename'];
-    $packagetitle = $_POST['packagetitle'];
-    $packagelocation = $_POST['packagelocation'];
-    $packageprice = $_POST['packageprice'];
-    $packagedetails = $_POST['packagedetails'];
-    $day = $_POST['day'];
-    $night = $_POST['night'];
-    $file = $_FILES['packageimage'];
-    $filename = $_FILES["packageimage"]["name"];
-    $filepath = $_FILES["packageimage"]["tmp_name"];
-
-    move_uploaded_file($filepath, '../upload/' . $filename);
-
-    if (!$con) {
-        die("Connection failed: "  . mysqli_connect_error());
-    }
-    $sql = "INSERT INTO packages(packagename,packagetitle,packagelocation,packageprice,packagedetails,`day`,night,packageimage)VALUES('$packagename','$packagetitle','$packagelocation','$packageprice','$packagedetails','$day','$night','$filename')";
-    if (mysqli_query($con, $sql)) {
-        header("Location:../dashboard.php");
+    if ($sql->execute()) {
+        header("Location: ../dashboard.php");  
         exit();
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($con);
+        echo "Error: " . $sql->error;
     }
 
-    mysqli_close($con);
+    $sql->close();
+} else {
+
+    echo "<p>Please fill in all the required fields.</p>";
 }
+
+$conn->close();
+?>

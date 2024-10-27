@@ -1,15 +1,9 @@
 <?php
-include './include/header.php';
-include './include/sidebar.php';
-include '../database/connection.php';
+include('./include/header.php');
+include('./include/sidebar.php');
+include('../sql_database/conn.php');
+
 ?>
-
-<!-- <?php
-$user_id = $_SESSION['user_id'];
-$user_name = $_SESSION['tms'];
-?> -->
-
-
 
 <!-- ========== tab components start ========== -->
 <section class="tab-components">
@@ -19,7 +13,7 @@ $user_name = $_SESSION['tms'];
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="title mb-30">
-            <h2> Total Booking </h2>
+            <h2>Total Booking</h2>
           </div>
         </div>
         <!-- end col -->
@@ -57,22 +51,22 @@ $user_name = $_SESSION['tms'];
                       <h6>Username</h6>
                     </th>
                     <th>
-                      <h6>Booking Name</h6>
+                      <h6>Flight Number</h6>
                     </th>
                     <th>
-                      <h6>Package Name</h6>
+                      <h6>Airline</h6>
                     </th>
                     <th>
-                      <h6>Phone Number</h6>
+                      <h6>Departure</h6>
                     </th>
                     <th>
-                      <h6>Tour Date</h6>
+                      <h6>Arrival</h6>
                     </th>
                     <th>
-                      <h6>No of Traveller</h6>
+                      <h6>Booking Date</h6>
                     </th>
                     <th>
-                      <h6>Totalprice</h6>
+                      <h6>Total Price</h6>
                     </th>
                     <th>
                       <h6>Status</h6>
@@ -84,42 +78,34 @@ $user_name = $_SESSION['tms'];
                   <!-- end table row-->
                 </thead>
                 <tbody>
-                  <tr>
-                    <?php
+                  <?php
+                    $sql = "SELECT customers.username, flights.flight_number, flights.airline, 
+                                   flights.departure_airport, flights.arrival_airport, 
+                                   bookings.booking_date, bookings.total_price, bookings.booking_id, bookings.status 
+                            FROM bookings 
+                            INNER JOIN customers ON bookings.user_id = customers.user_id 
+                            INNER JOIN flights ON bookings.flight_id = flights.flight_id 
+                            ORDER BY bookings.booking_date DESC";
 
-
-
-                    // $sql = "SELECT user.username,packages.packagename as username,pname,booking.name,booking.phonenumber,booking.date,booking.countpeople,booking.totalamount FROM user,packages,booking where user.id=booking.user_id and packages.id=booking.package_id";
-                    $sql = "SELECT user_name.username as username, packages.packagename as pname, booking.name,booking.id, booking.phonenumber, booking.date, booking.countpeople, booking.totalamount, booking.status 
-                      FROM user AS user_name, user AS user_id, packages, booking 
-                      WHERE user_name.id = booking.user_id AND user_id.id = booking.user_id AND packages.id = booking.package_id";
-                    $data = mysqli_query($con, $sql);
+                    $data = mysqli_query($conn, $sql);
                     while ($row = mysqli_fetch_assoc($data)) {
-                      echo "  <tr>
-                                    <td>" . $row['username'] . "</td>
-                                    <td>" . $row['name'] . "</td>
-                                    <td>" . $row['pname'] . "</td>
-                                    <td>" . $row['phonenumber'] . "</td>
-                                    <td>" . $row['date'] . "</td>
-                                    <td>" . $row['countpeople'] . "</td>
-                                    <td>" . $row['totalamount'] . "</td>
-                                    <td>" . $row['status'] . "</td>
-                                    <td>
-                                    <form action='./processes/booking-processs.php?id=$row[id]' method='post'>
-                                      <input type='submit'  class='btn btn-primary' value='Approve' />
-                                      </form>
-                                    </td>
-                                      <td>
-                                      <form action='./processes/booking-process.php?id=$row[id]' method='post'>
-                                      <input type='submit'  class='btn btn-danger' value='Cancel' />
-                                      </form>
-                                      </td>
-                                </tr>";
+                      echo "<tr>
+                              <td>" . $row['username'] . "</td>
+                              <td>" . $row['flight_number'] . "</td>
+                              <td>" . $row['airline'] . "</td>
+                              <td>" . $row['departure_airport'] . "</td>
+                              <td>" . $row['arrival_airport'] . "</td>
+                              <td>" . $row['booking_date'] . "</td>
+                              <td>" . $row['total_price'] . "</td>
+                              <td>" . $row['status'] . "</td>
+                              <td>
+                                <form action='./processes/booking-processs.php ?id=" . $row['booking_id'] . "' method='post'>
+                                  <input type='submit' class='btn btn-danger' value='Reject' />
+                                </form>
+                              </td>
+                            </tr>";
                     }
-                    ?>
-
-                  </tr>
-                  <!-- end table row -->
+                  ?>
                   <!-- end table row -->
                 </tbody>
               </table>
@@ -134,5 +120,4 @@ $user_name = $_SESSION['tms'];
     </div>
   </div>
 
-
-  <?php include './include/footer.php'; ?>
+<?php include './include/footer.php'; ?>

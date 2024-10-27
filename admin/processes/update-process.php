@@ -1,64 +1,69 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "tms";
+include('../../sql_database/conn.php');
 
-$con = mysqli_connect($servername, $username, $password, $dbname);
+// Check if flight_id is set
+if (isset($_GET['id'])) {
+    $flight_id = intval($_GET['id']);  // Get flight ID
 
+    // Retrieve updated flight details from POST request
+    $flight_number = $_POST['flight_number'];
+    $airline = $_POST['airline'];
+    $departure_airport = $_POST['departure_airport'];
+    $arrival_airport = $_POST['arrival_airport'];
+    $departure_time = $_POST['departure_time'];
+    $arrival_time = $_POST['arrival_time'];
+    $duration = (int)$_POST['duration'];
+    $total_seats = (int)$_POST['total_seats'];
+    $available_seats = (int)$_POST['available_seats'];
+    $price = (float)$_POST['price']; // Make sure this is a float
 
-$id = $_GET['id'];
-$packagename = $_POST['packagename'];
-$packagelocation = $_POST['packagelocation'];
-$packageprice = $_POST['packageprice'];
-$packagedetails = $_POST['packagedetails'];
-$day = $_POST['day'];
-$night = $_POST['night'];
+    // Prepare SQL statement to update flight details securely
+    $sql = "UPDATE Flights SET  
+            flight_number = ?,
+            airline = ?,
+            departure_airport = ?,
+            arrival_airport = ?,
+            departure_time = ?,
+            arrival_time = ?,
+            duration = ?,
+            total_seats = ?,
+            available_seats = ?,
+            price = ?
+            WHERE flight_id = ?";
 
-$filename = $_FILES['packageimage']['name'];
-$filepath = $_FILES["packageimage"]['tmp_name'];
-$packageimageold= $_POST['packageimageold'];
+    $stmt = $conn->prepare($sql);
 
-if($filename != '')
-{
-    $update_filename = $_FILES['packageimage']['name'];
-    move_uploaded_file($filepath,'../upload/' . $filename);
+    // Correctly include flight_id in the bind_param
+    $stmt->bind_param(
+        "ssssssiidii",
+        $flight_number,
+        $airline,
+        $departure_airport,
+        $arrival_airport,
+        $departure_time,
+        $arrival_time,
+        $duration,
+        $total_seats,
+        $available_seats,
+        $price,
+        $flight_id // Last parameter
+    );
+    error_log("Flight ID: $flight_id, Flight Number: $flight_number, Airline: $airline, ...");
 
-    $sql = "UPDATE packages SET  
-    packagename='$packagename',
-    packagelocation='$packagelocation',
-    packageprice='$packageprice',
-    packagedetails='$packagedetails',
-    `day` ='$day',
-    night='$night',
-    packageimage='$update_filename'
-    WHERE id = $id";
+    if ($stmt->execute()) {
+        // Redirect to manage flights page after successful update
+        header("Location: ../manageflight.php");
+        exit();
+    } else {
+        // Handle error if the update fails
+        error_log("Error updating flight: " . $stmt->error); // Log the error for debugging
+        echo "Error updating flight. Please try again later.";
+    }
 
-    mysqli_query($con,$sql);
-    unlink("../upload/".$packageimageold);
+    $stmt->close();
+} else {
+    // Handle case where flight_id is not set
+    echo "Flight ID is missing.";
 }
-else
-{
-    $sql = "UPDATE packages SET  
-    packagename='$packagename',
-    packagelocation='$packagelocation',
-    packageprice='$packageprice',
-    packagedetails='$packagedetails',
-    `day` ='$day',
-    night='$night'
-    WHERE id = $id";
 
-    $data=mysqli_query($con,$sql);
-}
-
-if( $_FILES['packageimage']['name'] !='')
-{
-   // $destfile = '../upload/' . $filename;
-    move_uploaded_file($filepath, $destfile);
-    unlink("../upload/".$packageimageold);
-}
-
-header("Location:../managepackage.php");
-
-
-?>
+$conn->close();
